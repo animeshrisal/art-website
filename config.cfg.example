@@ -1,0 +1,4 @@
+[email]
+# indicates whether the server is to be started as a production or a development server
+user=Enter your username
+password=Enter your password

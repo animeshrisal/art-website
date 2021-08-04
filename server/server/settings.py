@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import configparser
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -154,5 +156,17 @@ CHANNEL_LAYERS = {
 }
 
 DJOSER = {
-    'SEND_CONFIRMATION_EMAIL': True
+    'SEND_CONFIRMATION_EMAIL': True,
+    'ACTIVATION_URL': 'localhost:3000/auth/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True
 }
+
+config = configparser.ConfigParser()
+config.read(os.path.join(BASE_DIR, 'config.cfg'))
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = config.get('email', 'user') 
+EMAIL_HOST_PASSWORD = config.get('email', 'password') 
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

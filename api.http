@@ -17,3 +17,37 @@ content-type: application/json
     "re_password": "master@123"
 }
 ###
+
+# @name user_login
+POST {{baseURL}}/auth/jwt/create/
+content-type: application/json
+
+{
+    "username": "test",
+    "password": "master@123"
+}
+###
+
+@access_token = {{user_login.response.body.access}}
+@refresh_token = {{user_login.response.body.refresh}}
+
+# @name refresh
+POST {{baseURL}}/auth/jwt/refresh/
+content-type: application/json
+
+{
+    "refresh": "{{refresh_token}}"
+}
+###
+
+@access_token = {{user_login.response.body.access}}
+
+# @name activate_user
+POST {{baseURL}}/auth/users/activation/
+content-type: application/json
+
+{
+    "uid": "MQ",
+    "token": "aquo6v-cf98fd961cc0123fb41b3a4871b278a2"
+}
+###
