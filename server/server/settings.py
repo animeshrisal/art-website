@@ -155,9 +155,13 @@ CHANNEL_LAYERS = {
     },
 }
 
+DOMAIN= 'localhost:3000'
+SITE_NAME= 'Arts'
+
 DJOSER = {
+
     'SEND_CONFIRMATION_EMAIL': True,
-    'ACTIVATION_URL': 'localhost:3000/auth/{uid}/{token}',
+    'ACTIVATION_URL': 'auth/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True
 }
 
