@@ -11,7 +11,9 @@ const Register = () => {
   const mutation = useMutation((user) => authenticationService.register(user));
 
   if (mutation.isSuccess) {
-    return <Redirect to="/confirm" />;
+    return <div>
+      Thank you for signing up! You should be getting an email! Please click the link in the email to activate it!
+    </div>;
   }
 
   return (

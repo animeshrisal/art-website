@@ -12,8 +12,6 @@ const Login = () => {
 
   const mutation = useMutation((user) => authenticationService.login(user), {
     onSuccess: (mutation) => {
-      console.log(mutation)
-      console.log("ASSD")
       dispatch({
         type: "LOGIN",
         payload: mutation,
