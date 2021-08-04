@@ -13,8 +13,10 @@ function App() {
     <AuthenticationProvider>
       <QueryClientProvider client={queryClient}>
         <Router>
+          <div>
           <Route exact path="/login" component={Login} />
           <PrivateRoute exact path="/dashboard" component={Dashboard} />
+          </div>
         </Router>
       </QueryClientProvider>
     </AuthenticationProvider>

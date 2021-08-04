@@ -10,14 +10,19 @@ import { useAuthentication } from "../../shared/context";
 const Login = () => {
   const { dispatch } = useAuthentication();
 
-  const mutation = useMutation((user) => authenticationService.login(user));
+  const mutation = useMutation((user) => authenticationService.login(user), {
+    onSuccess: (mutation) => {
+      console.log(mutation)
+      console.log("ASSD")
+      dispatch({
+        type: "LOGIN",
+        payload: mutation,
+      });
+    },
+  });
 
   if (mutation.isSuccess) {
-    dispatch({
-      type: "LOGIN",
-      payload: mutation.data,
-    });
-    return <Redirect to="/dashboard" />;
+    return <Redirect to="/dashboard" /> 
   }
 
   return (
