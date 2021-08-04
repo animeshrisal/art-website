@@ -5,17 +5,19 @@ import { authenticationService } from "../AuthService";
 import { useMutation } from "react-query";
 
 import { Redirect } from "react-router-dom";
-import { useAuthentication } from "../../shared/context";
+import { useAuthentication, useSocket } from "../../shared/context";
 
 const Login = () => {
   const { dispatch } = useAuthentication();
-
+  const { connect } = useSocket();
   const mutation = useMutation((user) => authenticationService.login(user), {
     onSuccess: (mutation) => {
       dispatch({
         type: "LOGIN",
         payload: mutation,
       });
+
+      connect(mutation.access)
     },
   });
 
