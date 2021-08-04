@@ -1,19 +1,18 @@
 import React from "react";
 import { Formik, Field, Form } from "formik";
 import { authenticationService } from "../AuthService";
-
 import { useMutation } from "react-query";
 
-import { Redirect } from "react-router-dom";
-
 const Register = () => {
-
   const mutation = useMutation((user) => authenticationService.register(user));
 
   if (mutation.isSuccess) {
-    return <div>
-      Thank you for signing up! You should be getting an email! Please click the link in the email to activate it!
-    </div>;
+    return (
+      <div>
+        Thank you for signing up! You should be getting an email! Please click
+        the link in the email to activate it!
+      </div>
+    );
   }
 
   return (
@@ -24,7 +23,7 @@ const Register = () => {
           username: "",
           email: "",
           password: "",
-          re_password: ""
+          re_password: "",
         }}
         onSubmit={async (values) => {
           mutation.mutate(values);

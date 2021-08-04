@@ -3,9 +3,9 @@ import { handleResponse, URL } from "../../helpers";
 export const authenticationService = {
   login,
   refreshToken,
-  forgotPassword,
   logout,
-  register
+  register,
+  activateUser,
 };
 
 function login({ username, password }) {
@@ -33,7 +33,7 @@ function register({ email, username, password, re_password }) {
   formData.append("username", username);
   formData.append("password", password);
   formData.append("email", email);
-  formData.append("re_password", re_password)
+  formData.append("re_password", re_password);
 
   const requestOptions = {
     method: "POST",
@@ -69,6 +69,19 @@ function logout() {
   localStorage.removeItem("user");
 }
 
-function forgotPassword() {}
+function activateUser(id, token) {
+  const formData = new FormData();
+  formData.append("id", id);
+  formData.append("token", token);
 
-function confirmPassword() {}
+  const requestOptions = {
+    method: "POST",
+    body: formData,
+  };
+
+  return fetch(`${URL}/auth/users/activation`, requestOptions)
+    .then(handleResponse)
+    .then((user) => {
+      return user;
+    });
+}
