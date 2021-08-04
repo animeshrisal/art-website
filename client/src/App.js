@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import NavBar from "./shared/components/NavBar";
 
-import { AuthenticationProvider } from "./context/AuthContext";
+import { AuthenticationProvider } from "./modules/shared/context/AuthContext";
 
 const queryClient = new QueryClient();
 
