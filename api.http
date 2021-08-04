@@ -1,0 +1,19 @@
+@baseURL = http://localhost:8000
+@token = ""
+
+###
+
+GET {{baseURL}}/ping
+
+###
+
+POST {{baseURL}}/auth/users/
+content-type: application/json
+
+{
+    "username": "test",
+    "email": "animeshrisal99@gmail.com",
+    "password": "master@123",
+    "re_password": "master@123"
+}
+###
