@@ -1,29 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 
 const SocketContext = React.createContext();
 
-const onMessage = (evt) => {
-    console.log(evt.data)
-}
+const SocketProvider = ({ children }) => {
+  let socket;
+  let [notification, setNotification] = useState(false);
 
-const SocketProvider = ({children}) => {
-    let socket;
+  const onMessage = (evt) => {
+    console.log(evt);
+    setNotification(true);
+  };
 
-    const connect = (token) => {
-        socket = new WebSocket(`ws://localhost:8000?token=${token}`)
-        socket.onmessage = (evt) => onMessage(evt);
-    }
+  const closeNotification = () => {
+    setNotification(false);
+  };
 
-    return (
-        <SocketContext.Provider value={{socket, connect}}>
-            {children}
-        </SocketContext.Provider>
-    )
-}
+  const connect = (token) => {
+    socket = new WebSocket(`ws://localhost:8000?token=${token}`);
+    socket.onmessage = (evt) => onMessage(evt);
+  };
+
+  return (
+    <SocketContext.Provider
+      value={{ socket, notification, connect, closeNotification }}
+    >
+      {children}
+    </SocketContext.Provider>
+  );
+};
 
 const useSocket = () => {
-    const context = React.useContext(SocketContext)
-    return context;
-}
+  const context = React.useContext(SocketContext);
+  return context;
+};
 
 export { SocketProvider, useSocket };
