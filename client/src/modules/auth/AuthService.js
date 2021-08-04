@@ -1,4 +1,4 @@
-import { handleResponse, URL } from "../helpers";
+import { handleResponse, URL } from "../../helpers";
 
 export const authenticationService = {
   login,
@@ -17,7 +17,7 @@ function login({ username, password }) {
     body: formData,
   };
 
-  return fetch(`${URL}/token/`, requestOptions)
+  return fetch(`${URL}/auth/jwt/create`, requestOptions)
     .then(handleResponse)
     .then((user) => {
       if (user.access) {
@@ -32,7 +32,7 @@ function refreshToken() {
     method: "POST",
   };
 
-  return fetch(`${URL}/token/refresh`, requestOptions)
+  return fetch(`${URL}/auth/jwt/refresh`, requestOptions)
     .then(handleResponse)
     .then((user) => {
       if (user.access) {
