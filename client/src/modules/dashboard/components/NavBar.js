@@ -43,7 +43,7 @@ const NavBar = (props) => {
         <NavLink
           activeClassName="selected-nav-item"
           className="nav-item"
-          to="/dashboard/notification"
+          to="/dashboard/notifications"
         >
           Notifications
         </NavLink>

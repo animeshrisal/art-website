@@ -1,7 +1,7 @@
 function authHeader() {
     const user = localStorage.getItem('user')
     if (user) {
-        return { 'Authorization': `Bearer ${JSON.parse(user).access}` };
+        return { 'Authorization': `JWT ${JSON.parse(user).access}` };
     } else {
         return {};
     }
