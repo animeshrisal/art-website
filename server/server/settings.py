@@ -181,3 +181,9 @@ EMAIL_HOST_USER = config.get('email', 'user')
 EMAIL_HOST_PASSWORD = config.get('email', 'password') 
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+# Base url to serve media files
+MEDIA_URL = '/media/'
+
+# Path where media is stored
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
