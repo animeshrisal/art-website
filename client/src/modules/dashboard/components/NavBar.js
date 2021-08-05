@@ -1,29 +1,74 @@
-import React from "react";
-import { NavLink } from 'react-router-dom';
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { useAuthentication } from "../../shared/context";
+import { Menu } from "antd";
 
 const NavBar = (props) => {
+  const { state, dispatch } = useAuthentication();
+  const [ current, setCurrent ] = useState('dashboard');
 
-    const { state, dispatch } = useAuthentication()
-    if (!state.isAuthenticated){
-        return (
-            <div/>
-        )
-    }
+  if (!state.isAuthenticated) {
+    return <div />;
+  }
 
-    const logoutUser = () => {
-        dispatch({type: 'LOGOUT'})         
-    }
+  const handleMenu = e => {
+      setCurrent(e.key)
+  }
 
-    return (
-         <ul className="nav-list">
-            <NavLink activeClassName="selected-nav-item" className="nav-item" to="/dashboard"></NavLink>
-            <NavLink activeClassName="selected-nav-item" className="nav-item"to="/profile">Account</NavLink>
-            <NavLink activeClassName="selected-nav-item" className="nav-item"to="/notification">Notifications</NavLink>
-            <NavLink activeClassName="selected-nav-item" className="nav-item"to="/login"  onClick={logoutUser}>Logout</NavLink>
-        </ul>
-    )   
-}
+  const logoutUser = () => {
+    dispatch({ type: "LOGOUT" });
+  };
 
+  return (
+    <Menu mode="horizontal" onClick={handleMenu} selectedKeys={[current]}>
+      <Menu.Item key="dashboard">
+        <NavLink
+          activeClassName="selected-nav-item"
+          className="nav-item"
+          to="/dashboard"
+        >
+          Dashboard
+        </NavLink>
+      </Menu.Item>
+      <Menu.Item key="upload">
+        <NavLink
+          activeClassName="selected-nav-item"
+          className="nav-item"
+          to="/dashboard/upload"
+        >
+          Upload
+        </NavLink>
+      </Menu.Item>
+      <Menu.Item key="notifications">
+        <NavLink
+          activeClassName="selected-nav-item"
+          className="nav-item"
+          to="/dashboard/notification"
+        >
+          Notifications
+        </NavLink>
+      </Menu.Item>
+      <Menu.Item key="profile">
+        <NavLink
+          activeClassName="selected-nav-item"
+          className="nav-item"
+          to="/dashboard/profile"
+        >
+          Profile
+        </NavLink>
+      </Menu.Item>
+      <Menu.Item key="logout">
+        <NavLink
+          activeClassName="selected-nav-item"
+          className="nav-item"
+          to="/login"
+          onClick={logoutUser}
+        >
+          Logout
+        </NavLink>
+      </Menu.Item>
+    </Menu>
+  );
+};
 
 export default NavBar;

@@ -1,11 +1,23 @@
-import React from 'react'
-import { useSocket } from '../../shared/context';
-
+import React from "react";
+import { useRouteMatch } from "react-router";
+import { Switch } from "react-router-dom";
+import PrivateRoute from "../../shared/components/PrivateRoute";
+import NavBar from "../components/NavBar";
+import Upload from "./Upload";
+import Notification from "./Notification";
+import Profile from "./Profile";
 
 const Dashboard = () => {
-    const { notification, closeNotification } = useSocket()
-
-    return <div>{notification.toString()}</div>
-}
-
+  let { url } = useRouteMatch();
+  return (
+    <div>
+      <NavBar />
+      <Switch>
+        <PrivateRoute path={`${url}/upload`} component={Upload} />
+        <PrivateRoute path={`${url}/notifications`} component={Notification} />
+        <PrivateRoute path={`${url}/profile`} component={Profile} />
+      </Switch>
+    </div>
+  );
+};
 export default Dashboard;
