@@ -18,15 +18,19 @@ class ImageUpload(generics.CreateAPIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    pagination_class = StandardResultsSetPagination
+
 
     def list(self, request, artwork_pk):
         queryset = self.queryset.filter(artwork_id=artwork_pk)
-        serializer = CommentSerializer(queryset, many=True)
-        return Response(serializer.data)
+        page = self.paginate_queryset(queryset)
+
+        serializer = CommentSerializer(page, many=True)
+        result = self.get_paginated_response(serializer.data)
+        return result
 
     def create(self, request, artwork_pk):
         context = { 'artwork': artwork_pk, 'user': request.user }
