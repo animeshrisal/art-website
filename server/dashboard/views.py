@@ -1,7 +1,8 @@
+from django.db.models import query
 from shared.helpers import StandardResultsSetPagination
 from rest_framework.response import Response
 from dashboard.serializers import ArtworkSerializer, CommentSerializer
-from rest_framework import status, generics
+from rest_framework import mixins, serializers, status, generics
 from rest_framework import viewsets, generics
 from .models import Artwork, Comment
 
@@ -17,7 +18,18 @@ class ImageUpload(generics.CreateAPIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class ArtworkDashboardView(generics.ListAPIView):
+    serializer_class = ArtworkSerializer
+    queryset = Artwork.objects.all()
+    pagination_class = StandardResultsSetPagination
 
+    def list(self, request):
+        context = {'request': request }
+        queryset = self.queryset.filter(owned_by=request.user)
+        page = self.paginate_queryset(queryset)
+        serializers = ArtworkSerializer(page, many=True, context=context)
+        result = self.get_paginated_response(serializers.data)
+        return result
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
@@ -45,7 +57,7 @@ class CommentDestroyAPIView(generics.DestroyAPIView):
     queryset = Comment.objects.all()
 
     def destroy(self, request, artwork_pk, pk):   
-        comment = self.queryset.get(id=pk)
+        comment = self.queryset.get(id=pk, artwork_id=artwork_pk)
         if comment.delete():
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
