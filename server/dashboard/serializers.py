@@ -50,7 +50,15 @@ class ArtworkSerializer(serializers.ModelSerializer):
     description = serializers.CharField()
     image = serializers.ImageField(required=True)
 
-    
+    def create(self, validated_data):
+        artwork = Artwork.objects.create(
+            name=validated_data['name'], 
+            description=validated_data['description'],
+            image=validated_data['image'],
+            owned_by=self.context['owned_by']
+        )
+
+        return artwork
 
     class Meta:
         model = Artwork

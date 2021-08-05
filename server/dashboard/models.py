@@ -17,7 +17,8 @@ class Artwork(TimeStampedModel):
     image = models.ImageField()
     gallery = models.ManyToManyField(Gallery)
     tags = models.ManyToManyField(Tags)
-    likes = models.ManyToManyField(User)
+    likes = models.ManyToManyField(User, related_name='likes')
+    owned_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owned_by')
 
 class Comment(TimeStampedModel):
     comment = models.CharField(max_length=200)
