@@ -26,7 +26,7 @@ class CommentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         comment = Comment.objects.create(
             comment=validated_data['comment'], 
-            artwork=self.context['artwork'],
+            artwork_id=self.context['artwork'],
             user=self.context['user']
         )
         
