@@ -6,7 +6,7 @@ class ImageUpload(generics.CreateAPIView):
     serializer_class = ArtworkSerializer
 
     def create(self, request):
-        context = {'owned_by': request.user}
+        context = {'request': request }
         serializer = ArtworkSerializer(data=request.data, context=context)
         if serializer.is_valid():
             serializer.save()

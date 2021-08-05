@@ -55,11 +55,10 @@ class ArtworkSerializer(serializers.ModelSerializer):
             name=validated_data['name'], 
             description=validated_data['description'],
             image=validated_data['image'],
-            owned_by=self.context['owned_by']
+            owned_by=self.context['request'].user
         )
 
         return artwork
-
     class Meta:
         model = Artwork
         fields = ('id', 'name', 'description', 'image')
