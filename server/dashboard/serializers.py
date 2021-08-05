@@ -22,6 +22,7 @@ class GallerySerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     comment = serializers.CharField(required=True)
+    commentor = serializers.CharField(source='user.username', read_only=True)
 
     def create(self, validated_data):
         comment = Comment.objects.create(
@@ -34,7 +35,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('id', 'comment')
+        fields = ('id', 'comment', 'commentor')
 
 class NotificationSerializer(serializers.ModelSerializer):
     type = serializers.IntegerField()
