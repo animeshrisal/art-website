@@ -27,3 +27,4 @@ yarn-error.log*
 
 *.dbsqlite
 config.cfg
+/server/media
