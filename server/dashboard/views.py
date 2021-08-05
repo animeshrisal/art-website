@@ -2,7 +2,7 @@ from django.db.models import query
 from shared.helpers import StandardResultsSetPagination
 from rest_framework.response import Response
 from dashboard.serializers import ArtworkSerializer, CommentSerializer
-from rest_framework import mixins, serializers, status, generics
+from rest_framework import status, generics
 from rest_framework import viewsets, generics
 from .models import Artwork, Comment
 

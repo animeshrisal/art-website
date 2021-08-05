@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from .models import Gallery, Tags, Artwork, Comment, Notification
+import json
+from django.db import transaction
 # Create your views here.
 
 class GallerySerializer(serializers.ModelSerializer):
@@ -46,20 +48,37 @@ class NotificationSerializer(serializers.ModelSerializer):
         model = Notification
         fields = ('id', 'type', 'data', 'read')
 
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tags
+        fields = ('id', 'name')
+
 class ArtworkSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=True)
     description = serializers.CharField()
     image = serializers.ImageField(required=True)
 
     def create(self, validated_data):
-        artwork = Artwork.objects.create(
-            name=validated_data['name'], 
-            description=validated_data['description'],
-            image=validated_data['image'],
-            owned_by=self.context['request'].user
-        )
+        with transaction.atomic():
+            artwork = Artwork.objects.create(
+                name=validated_data['name'], 
+                description=validated_data['description'],
+                image=validated_data['image'],
+                owned_by=self.context['request'].user
+            )
 
-        return artwork
+            tag_input=list(set(['asd', 'asd']))
+            tags_list = []
+            for tag in tag_input:
+                tags_list.append(
+                    Artwork.tags.through(
+                        artwork=artwork, 
+                        tags=Tags.objects.get_or_create(name=tag)[0]
+                        )
+                    )
+            Artwork.tags.through.objects.bulk_create(tags_list) 
+
+            return artwork
     class Meta:
         model = Artwork
         fields = ('id', 'name', 'description', 'image')
