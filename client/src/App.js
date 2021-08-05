@@ -8,6 +8,7 @@ import Dashboard from "./modules/dashboard/pages/Dashboard";
 import Register from "./modules/auth/pages/Register";
 import ConfirmUser from "./modules/auth/pages/ConfirmUser";
 import { SocketProvider } from "./modules/shared/context";
+import './App.scss'
 
 const queryClient = new QueryClient();
 

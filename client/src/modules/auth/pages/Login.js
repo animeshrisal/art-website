@@ -1,11 +1,11 @@
 import React from "react";
-import { Formik, Field, Form } from "formik";
 import { authenticationService } from "../AuthService";
 
 import { useMutation } from "react-query";
 
 import { Redirect } from "react-router-dom";
 import { useAuthentication, useSocket } from "../../shared/context";
+import { Form, Input, Button } from "antd";
 
 const Login = () => {
   const { dispatch } = useAuthentication();
@@ -17,36 +17,50 @@ const Login = () => {
         payload: mutation,
       });
 
-      connect(mutation.access)
+      connect(mutation.access);
     },
   });
 
   if (mutation.isSuccess) {
-    return <Redirect to="/dashboard" /> 
+    return <Redirect to="/dashboard" />;
   }
+
+  const onFinish = (values) => {
+    mutation.mutate(values);
+  };
 
   return (
     <div>
-      <h1>Sign Up</h1>
-      <Formik
-        initialValues={{
-          username: "",
-          password: "",
-        }}
-        onSubmit={async (values) => {
-          mutation.mutate(values);
-        }}
+      <h1>Login</h1>
+      <Form
+        name="basic"
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 16 }}
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
       >
-        <Form>
-          <label htmlFor="username">Username</label>
-          <Field id="username" name="username" placeholder="Jane" />
+        <Form.Item
+          label="Username"
+          name="username"
+          rules={[{ required: true, message: "Please input your username!" }]}
+        >
+          <Input />
+        </Form.Item>
 
-          <label htmlFor="password">Password</label>
-          <Field id="password" name="password" />
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[{ required: true, message: "Please input your password!" }]}
+        >
+          <Input.Password />
+        </Form.Item>
 
-          <button type="submit">Submit</button>
-        </Form>
-      </Formik>
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 };
