@@ -18,7 +18,7 @@ class ImageUpload(generics.CreateAPIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ArtworkDashboardView(generics.ListAPIView):
+class Feed(generics.ListAPIView):
     serializer_class = ArtworkSerializer
     queryset = Artwork.objects.all()
     pagination_class = StandardResultsSetPagination

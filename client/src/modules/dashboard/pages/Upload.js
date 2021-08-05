@@ -1,15 +1,28 @@
 import React, { useState } from "react";
 import { useMutation } from "react-query";
 import { dashboardService } from "../DashboardService";
-import { Form, Input, Button, Upload } from "antd";
+import { Form, Input, Button, Upload, notification } from "antd";
 
 const ImageUpload = () => {
   const mutation = useMutation(
     (artwork) => dashboardService.imageUpload(artwork),
     {
-      onSuccess: (mutation) => {},
+      onSuccess: (mutation) => {
+        openNotification()
+      },
     }
   );
+
+  const openNotification = () => {
+    notification.open({
+      message: 'Success',
+      description:
+        'Image has successfully been uploaded!',
+      onClick: () => {
+        console.log('Notification Clicked!');
+      },
+    });
+  };
 
   const [fileList, setFileList] = useState([]);
 
@@ -20,16 +33,13 @@ const ImageUpload = () => {
     },
   };
 
-  if (mutation.isSuccess) {
-  }
-
   const onFinish = (values) => {
     mutation.mutate({ ...values, image: fileList[0] });
   };
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Upload</h1>
       <Form
         name="basic"
         labelCol={{ span: 8 }}
