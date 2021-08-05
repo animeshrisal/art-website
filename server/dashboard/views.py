@@ -22,7 +22,7 @@ class ImageUpload(generics.CreateAPIView):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-
+    pagination_class = StandardResultsSetPagination
 
     def list(self, request, artwork_pk):
         queryset = self.queryset.filter(artwork_id=artwork_pk)
