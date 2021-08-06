@@ -7,6 +7,7 @@ from rest_framework import serializers, status, generics
 from rest_framework import viewsets, generics
 from .models import Artwork, Comment
 
+
 class ImageUpload(generics.CreateAPIView):
     serializer_class = ArtworkSerializer
 
