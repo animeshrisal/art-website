@@ -32,7 +32,7 @@ class Feed(generics.ListAPIView):
         result = self.get_paginated_response(serializers.data)
         return result
 
-class Artwork(generics.RetrieveAPIView):
+class RetrieveArtwork(generics.RetrieveAPIView):
     serializer_class = ArtworkSerializer
     queryset = Artwork.objects.all()
 
@@ -44,6 +44,7 @@ class Artwork(generics.RetrieveAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except ObjectDoesNotExist as e:
             return Response(e, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
@@ -76,3 +77,26 @@ class CommentDestroyAPIView(generics.DestroyAPIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             return Response({'error': 'Cannot delete'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LikeAPIView(generics.CreateAPIView, generics.DestroyAPIView):
+    queryset = Artwork.objects.all()
+    serializer_class = ArtworkSerializer
+
+    def create(self, request, pk):
+        try:
+            artwork = self.queryset.get(id=pk)
+            artwork.like(request.user)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except  Artwork.DoesNotExist:
+            return Response({'error': 'Artwork does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk):
+        try:
+            artwork = self.queryset.get(id=pk)
+            artwork.unlike(request.user)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except  Artwork.DoesNotExist:
+            return Response({'error': 'Artwork does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+        

@@ -20,6 +20,13 @@ class Artwork(TimeStampedModel):
     likes = models.ManyToManyField(User, related_name='likes')
     owned_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owned_by')
 
+    def like(self, user):
+        self.likes.add(user)
+
+    def unlike(self, user):
+        self.likes.remove(user)
+
+
 class Comment(TimeStampedModel):
     comment = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
