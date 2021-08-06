@@ -119,3 +119,10 @@ DELETE {{baseURL}}/dashboard/artwork/1/follow
 content-type: application/json
 Authorization: JWT {{access_token}}
 ###
+
+# @name User Info
+
+GET {{baseURL}}/auth/users/me
+content-type: application/json
+Authorization: JWT {{access_token}}
+###
