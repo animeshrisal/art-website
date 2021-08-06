@@ -14,6 +14,12 @@ class User(AbstractUser):
     def count_following(self):
         return User.objects.filter(followers=self).count()
 
+    def follow(self, user):
+        self.followers.add(user)
+    
+    def unfollow(self, user):
+        self.followers.remove(user)
+
 class Gallery(TimeStampedModel):
     name = models.CharField(max_length=200)
     description = models.TextField()
@@ -35,7 +41,6 @@ class Artwork(TimeStampedModel):
 
     def unlike(self, user):
         self.likes.remove(user)
-
 
 class Comment(TimeStampedModel):
     comment = models.CharField(max_length=200)

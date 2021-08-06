@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from dashboard.serializers import ArtworkSerializer, CommentSerializer, FeedSerializer
 from rest_framework import serializers, status, generics
 from rest_framework import viewsets, generics
-from .models import Artwork, Comment
+from .models import Artwork, Comment, User
 
 
 class ImageUpload(generics.CreateAPIView):
@@ -82,7 +82,6 @@ class CommentDestroyAPIView(generics.DestroyAPIView):
 
 class LikeAPIView(generics.CreateAPIView, generics.DestroyAPIView):
     queryset = Artwork.objects.all()
-    serializer_class = ArtworkSerializer
 
     def create(self, request, pk):
         try:
@@ -99,5 +98,24 @@ class LikeAPIView(generics.CreateAPIView, generics.DestroyAPIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except  Artwork.DoesNotExist:
             return Response({'error': 'Artwork does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+class FollowAPiView(generics.CreateAPIView, generics.DestroyAPIView):
+    queryset = User.objects.all()
+
+    def create(self, request, pk):
+        try:
+            user = self.queryset.get(id=pk)
+            user.follow(request.user)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except User.DoesNotExist:
+            return Response({'error': 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk):
+        try:
+            user = self.queryset.get(id=pk)
+            user.unfollow(request.user)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except  User.DoesNotExist:
+            return Response({'error': 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
         
