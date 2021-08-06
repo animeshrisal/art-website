@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { useQuery } from "react-query";
 import { dashboardService } from "../DashboardService";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCoffee } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
+import { Image } from 'antd';
 
 const Artwork = () => {
   const { id } = useParams();
-  const { isLoading, data } = useQuery(
-    ["artwork", id], () =>
+  const { isLoading, data } = useQuery(["artwork", id], () =>
     dashboardService.artwork(id)
   );
 
@@ -20,9 +18,7 @@ const Artwork = () => {
     return (
       <div>
         <li key={data.id}>
-          <FontAwesomeIcon icon={faCoffee} />
-          {data.id}{" "}
-          <img src={data.image} alt={data.name} width="150px" height="150px" />
+          <Image width={200} src={data.image} />
         </li>
       </div>
     );
