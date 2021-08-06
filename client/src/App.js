@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import PrivateRoute from "./modules/shared/components/PrivateRoute";
 import { AuthenticationProvider } from "./modules/shared/context/AuthContext";
 import Login from "./modules/auth/pages/Login";
-import Dashboard from "./modules/dashboard/pages/Dashboard";
+import Dashboard from "./modules/dashboard/Dashboard";
 import Register from "./modules/auth/pages/Register";
 import ConfirmUser from "./modules/auth/pages/ConfirmUser";
 import { SocketProvider } from "./modules/shared/context";

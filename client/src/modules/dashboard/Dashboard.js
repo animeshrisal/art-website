@@ -1,13 +1,13 @@
 import React from "react";
 import { useRouteMatch } from "react-router";
 import { Switch } from "react-router-dom";
-import PrivateRoute from "../../shared/components/PrivateRoute";
-import NavBar from "../components/NavBar";
-import Upload from "./Upload";
-import Notification from "./Notification";
-import Profile from "./Profile";
-import Feed from "./Feed";
-import Artwork from "./Artwork";
+import PrivateRoute from "../shared/components/PrivateRoute";
+import NavBar from "./components/NavBar";
+import Upload from "./pages/Upload";
+import Notification from "./pages/Notification";
+import Profile from "./pages/Profile";
+import Feed from "./pages/Feed";
+import Artwork from "./pages/Artwork";
 
 const Dashboard = () => {
   let { url } = useRouteMatch();

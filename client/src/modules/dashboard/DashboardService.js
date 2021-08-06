@@ -36,8 +36,20 @@ const artwork = (artworkId) => {
     });
 };
 
+const artComments = (artworkId) => {
+  return fetch(
+    `${URL}/dashboard/artwork/${artworkId}/comment/`,
+    authenticatedGetRequestOption()
+  )
+    .then(handleResponse)
+    .then((artworks) => {
+      return artworks;
+    });
+}
+
 export const dashboardService = {
   imageUpload,
   getFeed,
-  artwork
+  artwork,
+  artComments
 };
