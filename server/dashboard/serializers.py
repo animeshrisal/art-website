@@ -57,7 +57,8 @@ class ArtworkSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=True)
     description = serializers.CharField()
     image = serializers.ImageField(required=True)
-
+    
+    
     def create(self, validated_data):
         with transaction.atomic():
             artwork = Artwork.objects.create(
@@ -82,3 +83,12 @@ class ArtworkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artwork
         fields = ('id', 'name', 'description', 'image')
+
+class FeedSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=True)
+    image = serializers.ImageField(required=True)
+    tags = TagSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Artwork
+        fields = ('id', 'name', 'image', 'tags')

@@ -79,14 +79,14 @@ Authorization: JWT {{access_token}}
 
 # @name feed
 
-GET {{baseURL}}/dashboard/artwork/
+GET {{baseURL}}/dashboard/feed/
 content-type: application/json
 Authorization: JWT {{access_token}}
 ###
 
 # @name artwork
 
-GET {{baseURL}}/dashboard/artwork/1/
+GET {{baseURL}}/dashboard/artwork/27/
 content-type: application/json
 Authorization: JWT {{access_token}}
 ###

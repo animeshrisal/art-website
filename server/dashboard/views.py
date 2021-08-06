@@ -2,7 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import query
 from shared.helpers import StandardResultsSetPagination
 from rest_framework.response import Response
-from dashboard.serializers import ArtworkSerializer, CommentSerializer
+from dashboard.serializers import ArtworkSerializer, CommentSerializer, FeedSerializer
 from rest_framework import serializers, status, generics
 from rest_framework import viewsets, generics
 from .models import Artwork, Comment
@@ -20,7 +20,7 @@ class ImageUpload(generics.CreateAPIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class Feed(generics.ListAPIView):
-    serializer_class = ArtworkSerializer
+    serializer_class = FeedSerializer
     queryset = Artwork.objects.all()
     pagination_class = StandardResultsSetPagination
 
@@ -28,7 +28,7 @@ class Feed(generics.ListAPIView):
         context = {'request': request }
         queryset = self.queryset.filter(owned_by=request.user)
         page = self.paginate_queryset(queryset)
-        serializers = ArtworkSerializer(page, many=True, context=context)
+        serializers = FeedSerializer(page, many=True, context=context)
         result = self.get_paginated_response(serializers.data)
         return result
 
