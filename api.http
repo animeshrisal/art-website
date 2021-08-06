@@ -77,9 +77,16 @@ content-type: application/json
 Authorization: JWT {{access_token}}
 ###
 
-# @name dashboard_artwork
+# @name feed
 
 GET {{baseURL}}/dashboard/artwork/
+content-type: application/json
+Authorization: JWT {{access_token}}
+###
+
+# @name artwork
+
+GET {{baseURL}}/dashboard/artwork/1/
 content-type: application/json
 Authorization: JWT {{access_token}}
 ###

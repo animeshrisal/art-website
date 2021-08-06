@@ -7,6 +7,7 @@ import Upload from "./Upload";
 import Notification from "./Notification";
 import Profile from "./Profile";
 import Feed from "./Feed";
+import Artwork from "./Artwork";
 
 const Dashboard = () => {
   let { url } = useRouteMatch();
@@ -15,6 +16,7 @@ const Dashboard = () => {
       <NavBar />
       <Switch>
         <PrivateRoute exact path={`${url}`} component={Feed} />
+        <PrivateRoute path={`${url}/artwork/:id`} component={Artwork} />
         <PrivateRoute path={`${url}/upload`} component={Upload} />
         <PrivateRoute path={`${url}/notifications`} component={Notification} />
         <PrivateRoute path={`${url}/profile`} component={Profile} />

@@ -1,8 +1,9 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import query
 from shared.helpers import StandardResultsSetPagination
 from rest_framework.response import Response
 from dashboard.serializers import ArtworkSerializer, CommentSerializer
-from rest_framework import status, generics
+from rest_framework import serializers, status, generics
 from rest_framework import viewsets, generics
 from .models import Artwork, Comment
 
@@ -30,6 +31,19 @@ class Feed(generics.ListAPIView):
         serializers = ArtworkSerializer(page, many=True, context=context)
         result = self.get_paginated_response(serializers.data)
         return result
+
+class Artwork(generics.RetrieveAPIView):
+    serializer_class = ArtworkSerializer
+    queryset = Artwork.objects.all()
+
+    def retrieve(self, request, pk):
+        try:
+            context = {'request': request}
+            queryset = self.queryset.get(id=pk)
+            serializer = ArtworkSerializer(queryset, context=context)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except ObjectDoesNotExist as e:
+            return Response(e, status=status.HTTP_400_BAD_REQUEST)
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
