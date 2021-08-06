@@ -91,7 +91,11 @@ class ArtworkSerializer(serializers.ModelSerializer):
 class FeedSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=True)
     image = serializers.ImageField(required=True)
+    total_likes = serializers.SerializerMethodField()
+    
+    def get_total_likes(self, obj):
+        return obj.likes.count()
 
     class Meta:
         model = Artwork
-        fields = ('id', 'name', 'image')
+        fields = ('id', 'name', 'image', 'total_likes')
