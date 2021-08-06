@@ -59,7 +59,7 @@ content-type: application/json
 Authorization: JWT {{access_token}}
 
 {
-    "comment": "This drawing sucks!"
+    "comment": "So good!"
 }
 ###
 
