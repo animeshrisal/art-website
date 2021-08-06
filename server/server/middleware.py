@@ -1,6 +1,7 @@
 from channels.db import database_sync_to_async
 from .settings import SECRET_KEY
-from django.contrib.auth.models import User, AnonymousUser
+from django.contrib.auth.models import AnonymousUser
+from dashboard.models import User
 import jwt
 from urllib.parse import parse_qs
 
