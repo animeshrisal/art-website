@@ -24,5 +24,5 @@ urlpatterns = [
     path('artwork/<int:artwork_pk>/comment/', views.CommentViewSet.as_view({'get': 'list', 'post': 'create'}), name='artwork-comment'),
     path('artwork/<int:artwork_pk>/comment/<int:pk>/', views.CommentDestroyAPIView.as_view(), name='artwork-comment-delete'),
     path('artwork/<int:pk>/like', views.LikeAPIView.as_view(), name='artwork-like'),
-    
+    path('user/<int:pk>/follow', views.FollowAPiView.as_view(), name='follow-unfollow')
 ]

@@ -86,7 +86,36 @@ Authorization: JWT {{access_token}}
 
 # @name artwork
 
-GET {{baseURL}}/dashboard/artwork/27/
+GET {{baseURL}}/dashboard/artwork/1/
+content-type: application/json
+Authorization: JWT {{access_token}}
+###
+
+# @name like_artwork
+
+POST {{baseURL}}/dashboard/artwork/1/like
+content-type: application/json
+Authorization: JWT {{access_token}}
+###
+
+# @name unlike_artwork
+
+DELETE {{baseURL}}/dashboard/artwork/27/like
+content-type: application/json
+Authorization: JWT {{access_token}}
+###
+
+
+# @name follow_user
+
+POST {{baseURL}}/dashboard/user/1/follow
+content-type: application/json
+Authorization: JWT {{access_token}}
+###
+
+# @name unfollow_user
+
+DELETE {{baseURL}}/dashboard/artwork/1/follow
 content-type: application/json
 Authorization: JWT {{access_token}}
 ###
