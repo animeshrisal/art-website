@@ -56,8 +56,12 @@ class TagSerializer(serializers.ModelSerializer):
 class ArtworkSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=True)
     description = serializers.CharField()
-    image = serializers.ImageField(required=True)
-    
+    image = serializers.ImageField(required=True)  
+    total_likes = serializers.SerializerMethodField()
+    tags = TagSerializer(read_only=True, many=True)
+
+    def get_total_likes(self, obj):
+        return obj.likes.count()
     
     def create(self, validated_data):
         with transaction.atomic():
@@ -82,13 +86,12 @@ class ArtworkSerializer(serializers.ModelSerializer):
             return artwork
     class Meta:
         model = Artwork
-        fields = ('id', 'name', 'description', 'image')
+        fields = ('id', 'name', 'description', 'image', 'total_likes', 'tags')
 
 class FeedSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=True)
     image = serializers.ImageField(required=True)
-    tags = TagSerializer(read_only=True, many=True)
 
     class Meta:
         model = Artwork
-        fields = ('id', 'name', 'image', 'tags')
+        fields = ('id', 'name', 'image')
