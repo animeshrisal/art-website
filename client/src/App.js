@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import PrivateRoute from "./modules/shared/components/PrivateRoute";
 import { AuthenticationProvider } from "./modules/shared/context/AuthContext";
@@ -13,6 +13,7 @@ import './App.scss'
 const queryClient = new QueryClient();
 
 function App() {
+
   return (
     <AuthenticationProvider>
       <SocketProvider>
@@ -22,7 +23,7 @@ function App() {
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/auth/:uid/:token" component={ConfirmUser} />
-              <PrivateRoute path="/dashboard" component={Dashboard} />
+              <PrivateRoute path="/" component={Dashboard} />
             </div>
           </Router>
         </QueryClientProvider>

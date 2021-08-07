@@ -25,7 +25,7 @@ const NavBar = (props) => {
         <NavLink
           activeClassName="selected-nav-item"
           className="nav-item"
-          to="/dashboard"
+          to="/"
         >
           Dashboard
         </NavLink>
@@ -34,7 +34,7 @@ const NavBar = (props) => {
         <NavLink
           activeClassName="selected-nav-item"
           className="nav-item"
-          to="/dashboard/upload"
+          to="/upload"
         >
           Upload
         </NavLink>
@@ -43,7 +43,7 @@ const NavBar = (props) => {
         <NavLink
           activeClassName="selected-nav-item"
           className="nav-item"
-          to="/dashboard/notifications"
+          to="/notifications"
         >
           Notifications
         </NavLink>
@@ -52,7 +52,7 @@ const NavBar = (props) => {
         <NavLink
           activeClassName="selected-nav-item"
           className="nav-item"
-          to="/dashboard/profile"
+          to="/profile"
         >
           Profile
         </NavLink>

@@ -16,10 +16,10 @@ const Dashboard = () => {
       <NavBar />
       <Switch>
         <PrivateRoute exact path={`${url}`} component={Feed} />
-        <PrivateRoute path={`${url}/artwork/:id`} component={Artwork} />
-        <PrivateRoute path={`${url}/upload`} component={Upload} />
-        <PrivateRoute path={`${url}/notifications`} component={Notification} />
-        <PrivateRoute path={`${url}/profile`} component={Profile} />
+        <PrivateRoute path={`${url}artwork/:id`} component={Artwork} />
+        <PrivateRoute path={`${url}upload`} component={Upload} />
+        <PrivateRoute path={`${url}notifications`} component={Notification} />
+        <PrivateRoute path={`${url}profile`} component={Profile} />
       </Switch>
     </div>
   );
