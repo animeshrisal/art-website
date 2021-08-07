@@ -44,7 +44,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('id', 'comment', 'commentor')
+        fields = ('id', 'comment', 'commentor', 'created_at')
 
 class NotificationSerializer(serializers.ModelSerializer):
     type = serializers.IntegerField()
@@ -101,10 +101,11 @@ class FeedSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=True)
     image = serializers.ImageField(required=True)
     total_likes = serializers.SerializerMethodField()
+    owned_by = UserSerializer(read_only=True)
     
     def get_total_likes(self, obj):
         return obj.likes.count()
 
     class Meta:
         model = Artwork
-        fields = ('id', 'name', 'image', 'total_likes')
+        fields = ('id', 'name', 'image', 'total_likes', 'owned_by')

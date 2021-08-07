@@ -65,7 +65,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     pagination_class = StandardResultsSetPagination
 
     def list(self, request, artwork_pk):
-        queryset = self.queryset.filter(artwork_id=artwork_pk)
+        queryset = self.queryset.filter(artwork_id=artwork_pk).order_by('-created_at')
         page = self.paginate_queryset(queryset)
 
         serializer = CommentSerializer(page, many=True)
