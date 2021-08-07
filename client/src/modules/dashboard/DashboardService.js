@@ -47,9 +47,21 @@ const artComments = (artworkId) => {
     });
 }
 
+const postComment = (artworkId, comment) => {
+  return fetch(
+    `${URL}/dashboard/artwork/${artworkId}/comment/`,
+    authenticatedRequestGenerator(comment, "POST")
+  )
+    .then(handleResponse)
+    .then((comment) => {
+      return comment;
+    });
+}
+
 export const dashboardService = {
   imageUpload,
   getFeed,
   artwork,
-  artComments
+  artComments,
+  postComment
 };
