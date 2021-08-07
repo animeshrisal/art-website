@@ -22,7 +22,7 @@ const Login = () => {
   });
 
   if (mutation.isSuccess) {
-    return <Redirect to="/dashboard" />;
+    return <Redirect to="/" />;
   }
 
   const onFinish = (values) => {

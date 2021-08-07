@@ -7,9 +7,7 @@ import Avatar from "antd/lib/avatar/avatar";
 import moment from "moment";
 
 const Artwork = () => {
-  const { url } = useRouteMatch();
 
-  console.log(url)
   const { id } = useParams();
   const { isLoading, data } = useQuery(["artwork", id], () =>
     dashboardService.artwork(id)

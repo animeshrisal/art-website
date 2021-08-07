@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import PrivateRoute from "./modules/shared/components/PrivateRoute";
 import { AuthenticationProvider } from "./modules/shared/context/AuthContext";
