@@ -4,13 +4,15 @@ import { dashboardService } from "../DashboardService";
 import { useParams } from "react-router-dom";
 import { Comment, Image, Tooltip, Input, Button, Tag } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
-import moment from "moment";
+import { DateTime } from "luxon";
 
 const Artwork = () => {
+  const dt = Date.now();
   const [comment, setComment] = useState('')
   const { TextArea } = Input;
   const { id } = useParams();
   const queryClient = useQueryClient()
+
 
   const { isLoading, data } = useQuery(["artwork", id], () =>
     dashboardService.artwork(id)
@@ -37,6 +39,7 @@ const Artwork = () => {
   }
 
   const CommentContainer = () => {
+
     if (isLoadingComments) {
       return <div>Loading...</div>;
     } else {
@@ -52,8 +55,8 @@ const Artwork = () => {
           author={<a>{comment.user.username}</a>}
           content={<p>{comment.comment}</p>}
           datetime={
-            <Tooltip title={moment().format("YYYY-MM-DD HH:mm:ss")}>
-              <span>{moment().fromNow()}</span>
+            <Tooltip title={DateTime.fromISO(comment.createdAt).toLocaleString(DateTime.DATETIME_MED)}>
+              <span>{DateTime.fromISO(comment.createdAt).toLocaleString(DateTime.DATETIME_MED)}</span>
             </Tooltip>
           }
         />
