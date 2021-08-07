@@ -20,17 +20,11 @@ class ImageUpload(generics.CreateAPIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class UserProfile(generics.CreateAPIView, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+class ProfileAPI(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
+    queryset = User.objects.all()
 
-    def create(self, request):
-        context = {'request': request}
-        serializer = UserSerializer(data=request.data, context=context)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
 class Feed(generics.ListAPIView):
     serializer_class = FeedSerializer

@@ -7,8 +7,9 @@ from django.db import transaction
 # Create your views here.
 
 class UserSerializer(serializers.ModelSerializer):
-    profile_pic = serializers.ImageField(required=True)  
-
+    profile_pic = serializers.ImageField()  
+    username = serializers.CharField(read_only=True)
+    
     class Meta:
         model = User
         fields = ('id', 'username', 'profile_pic')
