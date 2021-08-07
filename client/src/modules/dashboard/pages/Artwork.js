@@ -45,11 +45,11 @@ const Artwork = () => {
           key={comment.id}
           avatar={
             <Avatar
-              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              src={`http://localhost:8000${comment.user.profilePic}`}
               alt="Han Solo"
             />
           }
-          author={<a>{comment.commentor}</a>}
+          author={<a>{comment.user.username}</a>}
           content={<p>{comment.comment}</p>}
           datetime={
             <Tooltip title={moment().format("YYYY-MM-DD HH:mm:ss")}>
