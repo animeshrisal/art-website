@@ -1,10 +1,17 @@
 from django.shortcuts import render
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from .models import Gallery, Tags, Artwork, Comment, Notification
+from .models import Gallery, Tags, Artwork, Comment, Notification, User
 import json
 from django.db import transaction
 # Create your views here.
+
+class UserSerializer(serializers.ModelSerializer):
+    profile_pic = serializers.ImageField(required=True)  
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'profile_pic')
 
 class GallerySerializer(serializers.ModelSerializer):
     name = serializers.CharField(
@@ -59,6 +66,7 @@ class ArtworkSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(required=True)  
     total_likes = serializers.SerializerMethodField()
     tags = TagSerializer(read_only=True, many=True)
+    owned_by = UserSerializer(read_only=True)
 
     def get_total_likes(self, obj):
         return obj.likes.count()
@@ -84,9 +92,10 @@ class ArtworkSerializer(serializers.ModelSerializer):
             Artwork.tags.through.objects.bulk_create(tags_list) 
 
             return artwork
+
     class Meta:
         model = Artwork
-        fields = ('id', 'name', 'description', 'image', 'total_likes', 'tags')
+        fields = ('id', 'name', 'description', 'image', 'total_likes', 'tags', 'owned_by')
 
 class FeedSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=True)

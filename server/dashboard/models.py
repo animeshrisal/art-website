@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 class User(AbstractUser):
     followers = models.ManyToManyField('self')
+    profile_pic = models.ImageField()
 
     def count_followers(self):
         return self.followers.count()

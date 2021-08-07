@@ -2,8 +2,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import query
 from shared.helpers import StandardResultsSetPagination
 from rest_framework.response import Response
-from dashboard.serializers import ArtworkSerializer, CommentSerializer, FeedSerializer
-from rest_framework import serializers, status, generics
+from dashboard.serializers import ArtworkSerializer, CommentSerializer, FeedSerializer, UserSerializer
+from rest_framework import mixins, serializers, status, generics
 from rest_framework import viewsets, generics
 from .models import Artwork, Comment, User
 
@@ -14,6 +14,18 @@ class ImageUpload(generics.CreateAPIView):
     def create(self, request):
         context = {'request': request }
         serializer = ArtworkSerializer(data=request.data, context=context)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserProfile(generics.CreateAPIView, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+    serializer_class = UserSerializer
+
+    def create(self, request):
+        context = {'request': request}
+        serializer = UserSerializer(data=request.data, context=context)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
