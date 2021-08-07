@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { dashboardService } from "../DashboardService";
 import { useParams } from "react-router-dom";
-import { Comment, Image, Tooltip, Input, Button, Spin } from "antd";
+import { Comment, Image, Tooltip, Input, Button, Tag } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
 import moment from "moment";
 
 const Artwork = () => {
-  const [ comment, setComment ] = useState('')
+  const [comment, setComment] = useState('')
   const { TextArea } = Input;
   const { id } = useParams();
   const queryClient = useQueryClient()
@@ -29,7 +29,11 @@ const Artwork = () => {
   );
 
   const postComment = () => {
-    mutation.mutate({comment})
+    mutation.mutate({ comment })
+  }
+
+  const TagList = (props) => {
+    return props.tagList.map(tag => <Tag>{tag.name}</Tag>)
   }
 
   const CommentContainer = () => {
@@ -67,7 +71,8 @@ const Artwork = () => {
         <li key={data.id}>
           <Image width={200} src={data.image} />
         </li>
-        <TextArea  value={comment} onChange={e => setComment(e.target.value)} rows={2} />
+        <TagList tagList={data.tags} />
+        <TextArea value={comment} onChange={e => setComment(e.target.value)} rows={2} />
         <Button disabled={!comment} loading={mutation.isLoading} onClick={() => postComment()} >Comment</Button>
         <CommentContainer />
       </div>

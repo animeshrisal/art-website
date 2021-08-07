@@ -81,7 +81,7 @@ class ArtworkSerializer(serializers.ModelSerializer):
                 owned_by=self.context['request'].user
             )
 
-            tag_input=list(set(['asd', 'asd']))
+            tag_input= list(set(self.context['request'].data.get('tags', []).split(',')))
             tags_list = []
             for tag in tag_input:
                 tags_list.append(
