@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useMutation } from "react-query";
 import { dashboardService } from "../DashboardService";
-import { Form, Input, Button, Upload, notification } from "antd";
+import { Form, Input, Button, Upload, notification, Select } from "antd";
 
 const ImageUpload = () => {
+  const children = [];
   const mutation = useMutation(
     (artwork) => dashboardService.imageUpload(artwork),
     {
@@ -64,12 +65,19 @@ const ImageUpload = () => {
             <Button>Upload</Button>
           </Upload>
         </Form.Item>
+        <Form.Item label="Tags" name="tags">
+          <Select mode="tags" style={{ width: '100%' }} placeholder="Tags Mode">
+            {children}
+          </Select>
+        </Form.Item>
+
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
         </Form.Item>
+
       </Form>
     </div>
   );
