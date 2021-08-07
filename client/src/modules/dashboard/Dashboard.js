@@ -8,12 +8,25 @@ import Notification from "./pages/Notification";
 import Profile from "./pages/Profile";
 import Feed from "./pages/Feed";
 import Artwork from "./pages/Artwork";
+import Layout, { Content, Header } from "antd/lib/layout/layout";
+import { Breadcrumb } from "antd";
 
 const Dashboard = () => {
   let { url } = useRouteMatch();
   return (
     <div>
-      <NavBar />
+      <Layout className="layout">
+        <Header>
+          <NavBar />
+        </Header>
+      </Layout>
+      <Content style={{ padding: '0 50px' }}>
+      <Breadcrumb style={{ margin: '16px 0' }}>
+        <Breadcrumb.Item>Home</Breadcrumb.Item>
+        <Breadcrumb.Item>List</Breadcrumb.Item>
+        <Breadcrumb.Item>App</Breadcrumb.Item>
+      </Breadcrumb>
+      <div className="site-layout-content">Content</div>
       <Switch>
         <PrivateRoute exact path={`${url}`} component={Feed} />
         <PrivateRoute path={`${url}artwork/:id`} component={Artwork} />
@@ -21,6 +34,8 @@ const Dashboard = () => {
         <PrivateRoute path={`${url}notifications`} component={Notification} />
         <PrivateRoute path={`${url}profile`} component={Profile} />
       </Switch>
+    </Content>
+
     </div>
   );
 };

@@ -20,7 +20,7 @@ const NavBar = (props) => {
   };
 
   return (
-    <Menu mode="horizontal" onClick={handleMenu} selectedKeys={[current]}>
+    <Menu theme="dark" mode="horizontal" onClick={handleMenu} selectedKeys={[current]}>
       <Menu.Item key="dashboard">
         <NavLink
           activeClassName="selected-nav-item"

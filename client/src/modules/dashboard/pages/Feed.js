@@ -10,7 +10,7 @@ const Feed = (props) => {
   let { url } = useRouteMatch();
 
   const goToDetailPage = (id) => {
-    props.history.push(`${url}/artwork/${id}`);
+    props.history.push(`${url}artwork/${id}`);
   };
 
   if (isLoading) {

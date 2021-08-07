@@ -1,12 +1,15 @@
 import React from "react";
 import { useQuery } from "react-query";
 import { dashboardService } from "../DashboardService";
-import { useParams } from "react-router-dom";
+import { useParams, useRouteMatch } from "react-router-dom";
 import { Comment, Image, Tooltip } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
 import moment from "moment";
 
 const Artwork = () => {
+  const { url } = useRouteMatch();
+
+  console.log(url)
   const { id } = useParams();
   const { isLoading, data } = useQuery(["artwork", id], () =>
     dashboardService.artwork(id)
