@@ -21,8 +21,6 @@ const Dashboard = () => {
         </Header>
       </Layout>
       <Content style={{ padding: '0 50px' }}>
-
-        <div className="site-layout-content">Content</div>
         <Switch>
           <PrivateRoute exact path={`${url}`} component={Feed} />
           <PrivateRoute path={`${url}artwork/:id`} component={Artwork} />
