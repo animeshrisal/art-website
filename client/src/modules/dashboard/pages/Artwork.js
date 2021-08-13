@@ -71,9 +71,7 @@ const Artwork = () => {
   if (data) {
     return (
       <div>
-        <li key={data.id}>
-          <Image width={200} src={data.image} />
-        </li>
+        <Image width={400} preview={false} src={data.image} />
         <TagList tagList={data.tags} />
         <TextArea value={comment} onChange={e => setComment(e.target.value)} rows={2} />
         <Button disabled={!comment} loading={mutation.isLoading} onClick={() => postComment()} >Comment</Button>

@@ -23,10 +23,10 @@ const Dashboard = () => {
       <Content style={{ padding: '0 50px' }}>
         <Switch>
           <PrivateRoute exact path={`${url}`} component={Feed} />
-          <PrivateRoute path={`${url}artwork/:id`} component={Artwork} />
-          <PrivateRoute path={`${url}upload`} component={Upload} />
-          <PrivateRoute path={`${url}notifications`} component={Notification} />
-          <PrivateRoute path={`${url}profile`} component={Profile} />
+          <PrivateRoute path={`${url}/artwork/:id`} component={Artwork} />
+          <PrivateRoute path={`${url}/upload`} component={Upload} />
+          <PrivateRoute path={`${url}/notifications`} component={Notification} />
+          <PrivateRoute path={`${url}/profile`} component={Profile} />
         </Switch>
       </Content>
 
