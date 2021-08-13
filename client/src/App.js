@@ -22,8 +22,8 @@ function App() {
             <div>
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
-              <Route exact path="/auth/:uid/:token" component={ConfirmUser} />
-              <PrivateRoute path="/" component={Dashboard} />
+              <Route path="/auth/:uid/:token" component={ConfirmUser} />
+              <PrivateRoute path="/dashboard/" component={Dashboard} />
             </div>
           </Router>
         </QueryClientProvider>
