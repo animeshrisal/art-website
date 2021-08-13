@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import { dashboardService } from "../DashboardService";
 import { useRouteMatch } from "react-router-dom";
 import ArtworkCard from "../components/ArtworkCard";
+import "../styling/Feed.scss";
 
 const Feed = (props) => {
   const { isLoading, data } = useQuery("getFeed", dashboardService.getFeed);
@@ -10,7 +11,7 @@ const Feed = (props) => {
   let { url } = useRouteMatch();
 
   const goToDetailPage = (id) => {
-    props.history.push(`${url}artwork/${id}`);
+    props.history.push(`${url}/artwork/${id}`);
   };
 
   if (isLoading) {
@@ -19,15 +20,15 @@ const Feed = (props) => {
 
   if (data) {
     return (
-      <ul>
+      <div class="feed-container">
         {data.results.map((artwork) => (
-          <ArtworkCard
+          <ArtworkCard class="grid-item"
             goToDetailPage={goToDetailPage}
             key={artwork.id}
             {...artwork}
           />
         ))}
-      </ul>
+      </div>
     );
   }
 
