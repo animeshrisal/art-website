@@ -1,0 +1,21 @@
+.container {
+    margin: auto;
+    padding: 50px;
+    width: 500px;
+    .header {
+        text-align: center;
+    }
+
+    .ant-form-item-control-input {
+        button {
+            float: right;
+
+        }
+    }
+
+    .ant-form-item-label {
+        label {
+            float: left;
+        }
+    }
+}

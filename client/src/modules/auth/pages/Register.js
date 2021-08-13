@@ -3,6 +3,8 @@ import { authenticationService } from "../AuthService";
 import { useMutation } from "react-query";
 import { Form, Input, Button } from "antd";
 
+import "../styling/AuthForm.scss";
+
 const Register = () => {
   const mutation = useMutation((user) => authenticationService.register(user));
 
@@ -19,8 +21,8 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
+    <div className= "container">
+      <h1 className= "header">Register</h1>
       <Form
         name="basic"
         labelCol={{ span: 8 }}

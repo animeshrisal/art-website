@@ -7,6 +7,8 @@ import { Redirect } from "react-router-dom";
 import { useAuthentication, useSocket } from "../../shared/context";
 import { Form, Input, Button } from "antd";
 
+import "../styling/AuthForm.scss";
+
 const Login = () => {
   const { dispatch } = useAuthentication();
   const { connect } = useSocket();
@@ -22,7 +24,7 @@ const Login = () => {
   });
 
   if (mutation.isSuccess) {
-    return <Redirect to="/" />;
+    return <Redirect to="/dashboard/" />;
   }
 
   const onFinish = (values) => {
@@ -30,12 +32,10 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className= "container">
+      <h1 className= "header">Login</h1>
       <Form
         name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
       >
@@ -55,7 +55,7 @@ const Login = () => {
           <Input.Password />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+        <Form.Item>
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
