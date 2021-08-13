@@ -39,7 +39,7 @@ const ImageUpload = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Upload</h1>
       <Form
         name="basic"
