@@ -5,14 +5,15 @@ import { Menu } from "antd";
 
 const NavBar = (props) => {
   const { state, dispatch } = useAuthentication();
-  const [ current, setCurrent ] = useState('dashboard');
+  const [current, setCurrent] = useState('dashboard');
+  const url = "/dashboard"
 
   if (!state.isAuthenticated) {
     return <div />;
   }
 
   const handleMenu = e => {
-      setCurrent(e.key)
+    setCurrent(e.key)
   }
 
   const logoutUser = () => {
@@ -25,7 +26,7 @@ const NavBar = (props) => {
         <NavLink
           activeClassName="selected-nav-item"
           className="nav-item"
-          to="/"
+          to={`${url}`}
         >
           Dashboard
         </NavLink>
@@ -34,7 +35,7 @@ const NavBar = (props) => {
         <NavLink
           activeClassName="selected-nav-item"
           className="nav-item"
-          to="/upload"
+          to={`${url}/upload`}
         >
           Upload
         </NavLink>
@@ -43,7 +44,7 @@ const NavBar = (props) => {
         <NavLink
           activeClassName="selected-nav-item"
           className="nav-item"
-          to="/notifications"
+          to={`${url}/notifications`}
         >
           Notifications
         </NavLink>
@@ -52,7 +53,7 @@ const NavBar = (props) => {
         <NavLink
           activeClassName="selected-nav-item"
           className="nav-item"
-          to="/profile"
+          to={`${url}/profile`}
         >
           Profile
         </NavLink>
