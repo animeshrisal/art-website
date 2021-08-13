@@ -6,6 +6,8 @@ import { Comment, Image, Tooltip, Input, Button, Tag } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
 import { DateTime } from "luxon";
 
+import "../styling/Artwork.scss";
+
 const Artwork = () => {
   const dt = Date.now();
   const [comment, setComment] = useState('')
@@ -70,9 +72,13 @@ const Artwork = () => {
 
   if (data) {
     return (
-      <div>
-        <Image width={400} preview={false} src={data.image} />
-        <TagList tagList={data.tags} />
+      <div className="container">
+        <div className="image-container">
+          <Image width={400} preview={false} src={data.image} />
+        </div>
+        <div className="tags-container">
+          Tags: <TagList tagList={data.tags} />
+        </div>
         <TextArea value={comment} onChange={e => setComment(e.target.value)} rows={2} />
         <Button disabled={!comment} loading={mutation.isLoading} onClick={() => postComment()} >Comment</Button>
         <CommentContainer />

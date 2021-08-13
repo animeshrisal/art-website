@@ -9,7 +9,6 @@ const ArtworkCard = (props) => {
     return(
         <div onClick={goToDetailsPage}>
              <Image preview={false} width={200} src={props.image} />
-             <label>{props.name}</label>
         </div>
     )
 }
