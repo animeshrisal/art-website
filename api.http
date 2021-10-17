@@ -24,7 +24,7 @@ content-type: application/json
 
 {
     "username": "admin",
-    "password": "@nimation"
+    "password": "test@123"
 }
 ###
 
@@ -123,6 +123,13 @@ Authorization: JWT {{access_token}}
 # @name User Info
 
 GET {{baseURL}}/auth/users/me
+content-type: application/json
+Authorization: JWT {{access_token}}
+###
+
+# @name User Info
+
+GET {{baseURL}}/dashboard/user/1
 content-type: application/json
 Authorization: JWT {{access_token}}
 ###

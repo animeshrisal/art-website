@@ -15,7 +15,6 @@ const Artwork = () => {
   const { id } = useParams();
   const queryClient = useQueryClient()
 
-
   const { isLoading, data } = useQuery(["artwork", id], () =>
     dashboardService.artwork(id)
   );

@@ -7,7 +7,6 @@ const SocketProvider = ({ children }) => {
   let [notification, setNotification] = useState(false);
 
   const onMessage = (evt) => {
-    console.log(evt);
     setNotification(true);
   };
 

@@ -9,9 +9,26 @@ import Profile from "./pages/Profile";
 import Feed from "./pages/Feed";
 import Artwork from "./pages/Artwork";
 import Layout, { Content, Header } from "antd/lib/layout/layout";
+import { notification } from 'antd';
+import { useSocket } from "../shared/context";
 
 const Dashboard = () => {
   let { url } = useRouteMatch();
+  const { notification: notificationBoolean, closeNotification } = useSocket();
+
+    const args = {
+      message: 'Notification Title',
+      description:
+        'I will never close automatically. This is a purposely very very long description that has many many characters and words.',
+      duration: 0,
+      onClose: () => {
+        closeNotification()
+      }
+    };
+
+  if(notificationBoolean) {
+    notification.open(args);
+  }
 
   return (
     <div>

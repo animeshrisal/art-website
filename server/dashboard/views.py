@@ -1,4 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
 from django.db.models import query
 from shared.helpers import StandardResultsSetPagination
 from rest_framework.response import Response
@@ -6,25 +7,31 @@ from dashboard.serializers import ArtworkSerializer, CommentSerializer, FeedSeri
 from rest_framework import mixins, serializers, status, generics
 from rest_framework import viewsets, generics
 from .models import Artwork, Comment, User
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
-
+channel_layer = get_channel_layer()
 class ImageUpload(generics.CreateAPIView):
     serializer_class = ArtworkSerializer
 
     def create(self, request):
-        context = {'request': request }
-        serializer = ArtworkSerializer(data=request.data, context=context)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        with transaction.atomic():
+            context = {'request': request }
+            serializer = ArtworkSerializer(data=request.data, context=context)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ProfileAPI(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
-    
+    def get(self, request, pk):
+        queryset = self.queryset.get(id=pk)
+        serializer = UserSerializer(queryset)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class Feed(generics.ListAPIView):
     serializer_class = FeedSerializer
@@ -67,13 +74,19 @@ class CommentViewSet(viewsets.ModelViewSet):
         return result
 
     def create(self, request, artwork_pk):
-        context = { 'artwork': artwork_pk, 'user': request.user }
-        serializer = CommentSerializer(data=request.data, context=context)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        with transaction.atomic():
+            artwork = Artwork.objects.get(id=artwork_pk)
+            context = { 'artwork': artwork, 'commentor': request.user }
+            serializer = CommentSerializer(data=request.data, context=context)
+            async_to_sync(channel_layer.group_send)(
+                "notification_admin",
+                {"type": "notification.message", "message": "message"},
+            )
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CommentDestroyAPIView(generics.DestroyAPIView):
     queryset = Comment.objects.all()

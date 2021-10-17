@@ -11,7 +11,7 @@ const Feed = (props) => {
   let { url } = useRouteMatch();
 
   const goToDetailPage = (id) => {
-    props.history.push(`${url}/artwork/${id}`);
+    props.history.push(`${url}artwork/${id}`);
   };
 
   if (isLoading) {
@@ -20,9 +20,9 @@ const Feed = (props) => {
 
   if (data) {
     return (
-      <div class="feed-container">
+      <div className="feed-container">
         {data.results.map((artwork) => (
-          <ArtworkCard class="grid-item"
+          <ArtworkCard className="grid-item"
             goToDetailPage={goToDetailPage}
             key={artwork.id}
             {...artwork}

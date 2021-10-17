@@ -4,6 +4,7 @@ from rest_framework.validators import UniqueValidator
 from .models import Gallery, Tags, Artwork, Comment, Notification, User
 import json
 from django.db import transaction
+
 # Create your views here.
 
 class UserSerializer(serializers.ModelSerializer):
@@ -34,13 +35,20 @@ class CommentSerializer(serializers.ModelSerializer):
     comment = serializers.CharField(required=True)
     user =  UserSerializer(read_only=True)
 
+
     def create(self, validated_data):
         comment = Comment.objects.create(
             comment=validated_data['comment'], 
-            artwork_id=self.context['artwork'],
-            user=self.context['user']
+            artwork_id=self.context['artwork'].id,
+            user=self.context['commentor']
         )
-        
+
+        Notification.objects.create(
+            type = 1,
+            data = { 'commentor': self.context['commentor'].username },
+            user = self.context['artwork'].owned_by
+        )
+                
         return comment
 
     class Meta:
