@@ -36,7 +36,7 @@ const Artwork = () => {
   }
 
   const TagList = (props) => {
-    return props.tagList.map(tag => <Tag>{tag.name}</Tag>)
+    return props.tagList.map(tag => <Tag key={tag.id}>{tag.name}</Tag>)
   }
 
   const CommentContainer = () => {
