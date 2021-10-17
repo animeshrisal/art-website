@@ -6,6 +6,8 @@ const SocketProvider = ({ children }) => {
   let socket;
   let [notification, setNotification] = useState(false);
 
+  const user = localStorage.getItem('user')
+
   const onMessage = (evt) => {
     setNotification(true);
   };
@@ -18,6 +20,12 @@ const SocketProvider = ({ children }) => {
     socket = new WebSocket(`ws://localhost:8000?token=${token}`);
     socket.onmessage = (evt) => onMessage(evt);
   };
+
+
+  if(localStorage.getItem("user")) {
+      connect(JSON.parse(user).access)
+  }
+
 
   return (
     <SocketContext.Provider
