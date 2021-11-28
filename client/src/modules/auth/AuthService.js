@@ -18,7 +18,7 @@ function login({ username, password }) {
     body: formData,
   };
 
-  return fetch(`${URL}/auth/jwt/create`, requestOptions)
+  return fetch(`${URL}/auth/jwt/create/`, requestOptions)
     .then(handleResponse)
     .then((user) => {
       if (user.access) {
@@ -55,7 +55,7 @@ function refreshToken() {
     method: "POST",
   };
 
-  return fetch(`${URL}/auth/jwt/refresh`, requestOptions)
+  return fetch(`${URL}/auth/jwt/refresh/`, requestOptions)
     .then(handleResponse)
     .then((user) => {
       if (user.access) {
@@ -69,9 +69,9 @@ function logout() {
   localStorage.removeItem("user");
 }
 
-function activateUser(id, token) {
+function activateUser({uid, token}) {
   const formData = new FormData();
-  formData.append("id", id);
+  formData.append("uid", uid);
   formData.append("token", token);
 
   const requestOptions = {
@@ -79,7 +79,7 @@ function activateUser(id, token) {
     body: formData,
   };
 
-  return fetch(`${URL}/auth/users/activation`, requestOptions)
+  return fetch(`${URL}/auth/users/activation/`, requestOptions)
     .then(handleResponse)
     .then((user) => {
       return user;
