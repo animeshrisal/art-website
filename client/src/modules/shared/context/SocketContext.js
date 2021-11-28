@@ -2,10 +2,17 @@ import React, { useState } from "react";
 
 const SocketContext = React.createContext();
 
+const SocketState = {
+  Initial: 'Initial',
+  Connected: 'Connected',
+  Reconnecting: 'Reconnecting',
+  Closed: 'Closed'
+};
+
 const SocketProvider = ({ children }) => {
   var socket;
 
-  let [socketState, setSocketState] = useState('disconnected')
+  let [socketState, setSocketState] = useState(SocketState.Initial)
   const user = localStorage.getItem('user')
 
   const onMessage = (evt) => {
@@ -14,14 +21,17 @@ const SocketProvider = ({ children }) => {
 
   const onClose = (evt) => {
     console.log('Socket closed!')
+    setSocketState(SocketState.Closed)
   }
 
   const onOpen = (evt) => {
     console.log('Connected!')
+    setSocketState(SocketState.Connected)
   }
 
   const onError = (evt) => {
     console.log('Socket closed! Reconnecting.....')
+    setSocketState(SocketState.Reconnecting)
     setInterval(() => reconnect(), 5000)
   }
 
