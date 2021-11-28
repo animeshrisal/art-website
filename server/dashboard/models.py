@@ -9,10 +9,10 @@ class User(AbstractUser):
     followers = models.ManyToManyField('self')
     profile_pic = models.ImageField(upload_to="profile_pic", default="profile_pic/default.jpg")
 
-    def count_followers(self):
+    def followers_count(self):
         return self.followers.count()
     
-    def count_following(self):
+    def following_count(self):
         return User.objects.filter(followers=self).count()
 
     def follow(self, user):
@@ -43,6 +43,9 @@ class Artwork(TimeStampedModel):
     def unlike(self, user):
         self.likes.remove(user)
 
+    def total_likes(self):
+        self.likes.count()
+
 class Comment(TimeStampedModel):
     comment = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -51,6 +54,7 @@ class Comment(TimeStampedModel):
 class Notification(TimeStampedModel):
     class NotificationType(models.IntegerChoices):
         COMMENT_ON_ARTWORK = 1, _('Comment on Artwork')
+        FOLLOWED_YOU = 2, _('Followed You')
     
     type = models.IntegerField()
     data = models.JSONField()
