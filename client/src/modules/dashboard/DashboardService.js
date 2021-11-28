@@ -58,9 +58,18 @@ const postComment = (artworkId, comment) => {
     });
 }
 
+const getNotification = () => {
+  return fetch(`${URL}/dashboard/notification/`, authenticatedGetRequestOption())
+    .then(handleResponse)
+    .then((notifications) => {
+      return notifications;
+    });
+};
+
 export const dashboardService = {
   imageUpload,
   getFeed,
+  getNotification,
   artwork,
   artComments,
   postComment
