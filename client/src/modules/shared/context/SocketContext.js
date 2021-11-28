@@ -52,7 +52,7 @@ const SocketProvider = ({ children }) => {
     socket.onError = (evt) => onError(evt);
   };
 
-  if(localStorage.getItem("user")) {
+  if(localStorage.getItem("user") && socketState !== SocketState.Connected) {
       connect(JSON.parse(user).access)
   }
 
