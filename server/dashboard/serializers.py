@@ -10,10 +10,18 @@ from django.db import transaction
 class UserSerializer(serializers.ModelSerializer):
     profile_pic = serializers.ImageField()  
     username = serializers.CharField(read_only=True)
-    
+    following_count = serializers.SerializerMethodField()
+    follower_count = serializers.SerializerMethodField()
+
+    def get_following_count(self, obj):
+        return obj.following_count()
+
+    def get_follower_count(self, obj):
+        return obj.followers_count()
+
     class Meta:
         model = User
-        fields = ('id', 'username', 'profile_pic')
+        fields = ('id', 'username', 'profile_pic', 'following_count', 'follower_count')
 
 class GallerySerializer(serializers.ModelSerializer):
     name = serializers.CharField(
@@ -113,7 +121,7 @@ class FeedSerializer(serializers.ModelSerializer):
     owned_by = UserSerializer(read_only=True)
     
     def get_total_likes(self, obj):
-        return obj.likes.count()
+        return obj.total_likes()
 
     class Meta:
         model = Artwork
