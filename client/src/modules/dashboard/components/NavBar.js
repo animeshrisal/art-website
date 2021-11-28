@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { useAuthentication } from "../../shared/context";
+import { useAuthentication, useSocket } from "../../shared/context";
 import { Menu } from "antd";
 
 const NavBar = (props) => {
   const { state, dispatch } = useAuthentication();
   const [current, setCurrent] = useState('dashboard');
+  const {disconnect} = useSocket();
   const url = "/dashboard"
 
   if (!state.isAuthenticated) {
@@ -18,6 +19,7 @@ const NavBar = (props) => {
 
   const logoutUser = () => {
     dispatch({ type: "LOGOUT" });
+    disconnect();
   };
 
   return (

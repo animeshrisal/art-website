@@ -3,33 +3,52 @@ import React, { useState } from "react";
 const SocketContext = React.createContext();
 
 const SocketProvider = ({ children }) => {
-  let socket;
-  let [notification, setNotification] = useState(false);
+  var socket;
 
+  let [socketState, setSocketState] = useState('disconnected')
   const user = localStorage.getItem('user')
 
   const onMessage = (evt) => {
-    setNotification(true);
+    console.log("Received message!")
   };
 
-  const closeNotification = () => {
-    setNotification(false);
-  };
+  const onClose = (evt) => {
+    console.log('Socket closed!')
+  }
+
+  const onOpen = (evt) => {
+    console.log('Connected!')
+  }
+
+  const onError = (evt) => {
+    console.log('Socket closed! Reconnecting.....')
+    setInterval(() => reconnect(), 5000)
+  }
+
+  const reconnect = () => {
+    connect();
+  }
+
+  const disconnect = () => {
+    socket.close();
+    console.log('Disconnected!')
+  }
 
   const connect = (token) => {
     socket = new WebSocket(`ws://localhost:8000?token=${token}`);
+    socket.onopen = (evt) => onOpen(evt);
     socket.onmessage = (evt) => onMessage(evt);
+    socket.onclose = (evt) => onClose(evt);
+    socket.onError = (evt) => onError(evt);
   };
-
 
   if(localStorage.getItem("user")) {
       connect(JSON.parse(user).access)
   }
 
-
   return (
     <SocketContext.Provider
-      value={{ socket, notification, connect, closeNotification }}
+      value={{ connect, disconnect }}
     >
       {children}
     </SocketContext.Provider>
