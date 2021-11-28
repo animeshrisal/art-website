@@ -79,7 +79,7 @@ class CommentViewSet(viewsets.ModelViewSet):
             context = { 'artwork': artwork, 'commentor': request.user }
             serializer = CommentSerializer(data=request.data, context=context)
             async_to_sync(channel_layer.group_send)(
-                "notification_admin",
+                "notification_"+request.user.username,
                 {"type": "notification.message", "message": "message"},
             )
             if serializer.is_valid():
