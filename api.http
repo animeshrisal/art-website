@@ -23,7 +23,7 @@ POST {{baseURL}}/auth/jwt/create/
 content-type: application/json
 
 {
-    "username": "admin",
+    "username": "toast2",
     "password": "test@123"
 }
 ###
@@ -130,6 +130,20 @@ Authorization: JWT {{access_token}}
 # @name User Info
 
 GET {{baseURL}}/dashboard/user/1
+content-type: application/json
+Authorization: JWT {{access_token}}
+###
+
+# @name Get all notification
+
+GET {{baseURL}}/dashboard/notification/
+content-type: application/json
+Authorization: JWT {{access_token}}
+###
+
+# @name Get all notification
+
+PATCH {{baseURL}}/dashboard/notification/1
 content-type: application/json
 Authorization: JWT {{access_token}}
 ###

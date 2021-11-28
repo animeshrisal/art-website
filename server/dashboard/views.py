@@ -3,10 +3,10 @@ from django.db import transaction
 from django.db.models import query
 from shared.helpers import StandardResultsSetPagination
 from rest_framework.response import Response
-from dashboard.serializers import ArtworkSerializer, CommentSerializer, FeedSerializer, UserSerializer
+from dashboard.serializers import ArtworkSerializer, CommentSerializer, FeedSerializer, NotificationSerializer, UserSerializer
 from rest_framework import mixins, serializers, status, generics
 from rest_framework import viewsets, generics
-from .models import Artwork, Comment, User
+from .models import Artwork, Comment, Notification, User
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
@@ -118,7 +118,7 @@ class LikeAPIView(generics.CreateAPIView, generics.DestroyAPIView):
         except  Artwork.DoesNotExist:
             return Response({'error': 'Artwork does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
-class FollowAPiView(generics.CreateAPIView, generics.DestroyAPIView):
+class FollowAPIView(generics.CreateAPIView, generics.DestroyAPIView):
     queryset = User.objects.all()
 
     def create(self, request, pk):
@@ -137,4 +137,26 @@ class FollowAPiView(generics.CreateAPIView, generics.DestroyAPIView):
         except  User.DoesNotExist:
             return Response({'error': 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
-        
+class NotificaitonAPIView(generics.ListAPIView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+    pagination_class = StandardResultsSetPagination
+
+    def list(self, request):
+        queryset = self.queryset.filter(user=request.user).order_by('-created_at')
+        page = self.paginate_queryset(queryset)
+
+        serializer = NotificationSerializer(page, many=True)
+        result = self.get_paginated_response(serializer.data)
+        return result
+
+class ReadNotificationAPIView(generics.UpdateAPIView):
+    queryset = Notification.objects.all()
+
+    def patch(self, request, pk):
+        queryset = self.queryset.get(id=pk)
+        serializer = NotificationSerializer(queryset, data={'read': True}, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
