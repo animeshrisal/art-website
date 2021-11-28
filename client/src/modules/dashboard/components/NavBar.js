@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuthentication, useSocket } from "../../shared/context";
 import { Menu } from "antd";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBell } from '@fortawesome/free-solid-svg-icons'
+import { Badge } from 'antd';
 
 const NavBar = (props) => {
   const { state, dispatch } = useAuthentication();
@@ -69,6 +72,12 @@ const NavBar = (props) => {
         >
           Logout
         </NavLink>
+      </Menu.Item>
+
+      <Menu.Item key='notification'>
+        <Badge count={1} showZero>
+        <FontAwesomeIcon icon={faBell} size={'2x'}/>
+        </Badge>
       </Menu.Item>
     </Menu>
   );
