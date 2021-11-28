@@ -4,10 +4,10 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 
 const ConfirmUser = () => {
-  let { id, token } = useParams();
+  let { uid, token } = useParams();
   const { isLoading } = useQuery(
     "activateUser",
-    authenticationService.activateUser({ id, token })
+    authenticationService.activateUser({ uid, token })
   );
 
   if (isLoading) {
