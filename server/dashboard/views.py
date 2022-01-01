@@ -3,12 +3,14 @@ from django.db import transaction
 from django.db.models import query
 from shared.helpers import StandardResultsSetPagination
 from rest_framework.response import Response
-from dashboard.serializers import ArtworkSerializer, CommentSerializer, FeedSerializer, NotificationSerializer, TagSerializer, UserSerializer
+from dashboard.serializers import ArtworkSerializer, CommentSerializer, FeedSerializer, NotificationCountSerializer, NotificationSerializer, TagSerializer, UserSerializer
 from rest_framework import mixins, serializers, status, generics
 from rest_framework import viewsets, generics, filters
 from .models import Artwork, Comment, Notification, Tags, User
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from rest_framework.views import APIView
+
 
 
 channel_layer = get_channel_layer()
@@ -150,6 +152,14 @@ class NotificaitonAPIView(generics.ListAPIView):
         serializer = NotificationSerializer(page, many=True)
         result = self.get_paginated_response(serializer.data)
         return result
+
+class NotificationBadgeAPIView(APIView):
+
+    def get(self, request):
+        serializer = NotificationCountSerializer(request.user)
+        return Response({"result": serializer.data}, status=status.HTTP_200_OK)
+        
+
 
 class ReadNotificationAPIView(generics.UpdateAPIView):
     queryset = Notification.objects.all()

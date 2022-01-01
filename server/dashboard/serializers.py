@@ -69,6 +69,17 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ('id', 'comment', 'user', 'created_at')
 
+class NotificationCountSerializer(serializers.ModelSerializer):
+    unread_notification_count = serializers.SerializerMethodField()
+
+    def get_unread_notification_count(self, obj):
+        return Notification.objects.filter(read=True, user=obj).count()
+
+    class Meta:
+        model = User
+        fields = ('unread_notification_count',)
+
+
 class NotificationSerializer(serializers.ModelSerializer):
     type = serializers.IntegerField()
     data = serializers.JSONField()
