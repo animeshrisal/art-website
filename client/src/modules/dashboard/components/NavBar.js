@@ -5,10 +5,14 @@ import { Menu } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBell } from '@fortawesome/free-solid-svg-icons'
 import { Badge } from 'antd';
+import { dashboardService } from "../DashboardService";
+import { useQuery } from "react-query";
 
 const NavBar = (props) => {
   const { state, dispatch } = useAuthentication();
   const [current, setCurrent] = useState('dashboard');
+  const { data } = useQuery(['notificationBadge'], dashboardService.getNotificationBadge)
+  console.log(data)
   const {disconnect} = useSocket();
   const url = "/dashboard"
 
@@ -75,7 +79,7 @@ const NavBar = (props) => {
       </Menu.Item>
 
       <Menu.Item key='notification'>
-        <Badge count={1} showZero>
+        <Badge count={data}>
         <FontAwesomeIcon icon={faBell} size={'2x'}/>
         </Badge>
       </Menu.Item>

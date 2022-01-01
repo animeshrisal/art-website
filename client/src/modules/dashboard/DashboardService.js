@@ -76,12 +76,22 @@ const getTagsForDropdown = (searchTerm) => {
     )
 }
 
+const getNotificationBadge = () => {
+  return fetch(`${URL}/dashboard/notification/badge/`, authenticatedGetRequestOption())
+    .then(handleResponse)
+    .then((notification) => {
+      console.log(notification)
+      return notification.result.unreadNotificationCount;
+    });
+}
+
 export const dashboardService = {
   artComments,
   artwork,
   getFeed,
   getNotification,
   getTagsForDropdown,
+  getNotificationBadge,
   imageUpload,
   postComment
 };
