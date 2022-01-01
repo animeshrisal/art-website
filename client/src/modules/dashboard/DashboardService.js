@@ -66,11 +66,22 @@ const getNotification = () => {
     });
 };
 
+const getTagsForDropdown = (searchTerm) => {
+  return fetch(`${URL}/dashboard/tags?search=${searchTerm}`, authenticatedGetRequestOption())
+    .then(handleResponse)
+    .then((tags) => tags.results.map((tag) => ({
+      label: tag.name,
+      value: tag.name,
+    }))
+    )
+}
+
 export const dashboardService = {
-  imageUpload,
+  artComments,
+  artwork,
   getFeed,
   getNotification,
-  artwork,
-  artComments,
+  getTagsForDropdown,
+  imageUpload,
   postComment
 };

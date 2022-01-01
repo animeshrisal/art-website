@@ -23,7 +23,7 @@ function App() {
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route path="/auth/:uid/:token" component={ConfirmUser} />
-              <PrivateRoute path="/dashboard/" component={Dashboard} />
+              <PrivateRoute path="/dashboard" component={Dashboard} />
             </div>
           </Router>
         </QueryClientProvider>

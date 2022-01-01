@@ -1,10 +1,24 @@
 import React, { useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { dashboardService } from "../DashboardService";
-import { Form, Input, Button, Upload, notification, Select } from "antd";
+import { Form, Input, Button, Upload, notification, Select, Spin } from "antd";
+import DebounceSelect from "../components/DebounceSelect";
+
+
 
 const ImageUpload = () => {
-  const children = [];
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [searchedTags, setSearchedTag] = useState('')
+  const [fileList, setFileList] = useState([]);
+
+  const { isLoading, data, refetch } = useQuery(["tags"], () => dashboardService.getTagsForDropdown(searchedTags)
+  )
+
+  const searchTag = (value) => {
+    setSearchedTag(value)
+    refetch()
+  }
+
   const mutation = useMutation(
     (artwork) => dashboardService.imageUpload(artwork),
     {
@@ -25,7 +39,7 @@ const ImageUpload = () => {
     });
   };
 
-  const [fileList, setFileList] = useState([]);
+
 
   const props = {
     beforeUpload: (file) => {
@@ -66,9 +80,12 @@ const ImageUpload = () => {
           </Upload>
         </Form.Item>
         <Form.Item label="Tags" name="tags">
-          <Select mode="tags" style={{ width: '100%' }} placeholder="Tags Mode">
-            {children}
-          </Select>
+          <DebounceSelect value={selectedTags}
+            isLoading={isLoading}
+            search={searchTag}
+            onChange={(newValue) => {
+              setSelectedTags(newValue)
+            }} fetchOptions={data || []} mode="tags" style={{ width: '100%' }} placeholder="Tags Mode" />
         </Form.Item>
 
 
