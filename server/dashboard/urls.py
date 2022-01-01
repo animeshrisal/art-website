@@ -27,5 +27,6 @@ urlpatterns = [
     path('notification/', views.NotificaitonAPIView.as_view(), name='notification'),
     path('notification/<int:pk>', views.ReadNotificationAPIView.as_view(), name='read-notification'),
     path('user/<int:pk>/follow/', views.FollowAPIView.as_view(), name='follow-unfollow'),
-    path('user/<int:pk>/', views.ProfileAPI.as_view(), name='profile')
+    path('user/<int:pk>/', views.ProfileAPI.as_view(), name='profile'),
+    path('tags/', views.SearchTagsAPI.as_view(), name='tags')
 ]

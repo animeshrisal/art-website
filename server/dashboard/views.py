@@ -3,12 +3,13 @@ from django.db import transaction
 from django.db.models import query
 from shared.helpers import StandardResultsSetPagination
 from rest_framework.response import Response
-from dashboard.serializers import ArtworkSerializer, CommentSerializer, FeedSerializer, NotificationSerializer, UserSerializer
+from dashboard.serializers import ArtworkSerializer, CommentSerializer, FeedSerializer, NotificationSerializer, TagSerializer, UserSerializer
 from rest_framework import mixins, serializers, status, generics
-from rest_framework import viewsets, generics
-from .models import Artwork, Comment, Notification, User
+from rest_framework import viewsets, generics, filters
+from .models import Artwork, Comment, Notification, Tags, User
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+
 
 channel_layer = get_channel_layer()
 class ImageUpload(generics.CreateAPIView):
@@ -160,3 +161,10 @@ class ReadNotificationAPIView(generics.UpdateAPIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class SearchTagsAPI(generics.ListAPIView):
+    pagination_class = StandardResultsSetPagination
+    queryset = Tags.objects.all()
+    serializer_class = TagSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
