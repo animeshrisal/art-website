@@ -43,6 +43,11 @@ class CommentSerializer(serializers.ModelSerializer):
     comment = serializers.CharField(required=True)
     user =  UserSerializer(read_only=True)
 
+    def comment_preview(self, comment):
+        if len(comment) > 20:
+            return "{0}...".format(comment[0:20])
+
+        return comment
 
     def create(self, validated_data):
         comment = Comment.objects.create(
@@ -53,7 +58,8 @@ class CommentSerializer(serializers.ModelSerializer):
 
         Notification.objects.create(
             type = 1,
-            data = { 'commentor': self.context['commentor'].username },
+            data = { 'comment_preview': self.comment_preview(validated_data['comment']) },
+            initiator = self.context['commentor'],
             user = self.context['artwork'].owned_by
         )
                 
@@ -67,10 +73,11 @@ class NotificationSerializer(serializers.ModelSerializer):
     type = serializers.IntegerField()
     data = serializers.JSONField()
     read = serializers.BooleanField()
+    initiator = UserSerializer(read_only=True)
 
     class Meta:
         model = Notification
-        fields = ('id', 'type', 'data', 'read')
+        fields = ('id', 'type', 'data', 'read', 'initiator')
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:

@@ -59,5 +59,6 @@ class Notification(TimeStampedModel):
     type = models.IntegerField()
     data = models.JSONField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    initiator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='initiator')
     read = models.BooleanField(default=False)
 
