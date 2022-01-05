@@ -20,6 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.followers_count()
 
     class Meta:
+        ref_name = "UserStuff"
         model = User
         fields = ('id', 'username', 'profile_pic', 'following_count', 'follower_count')
 

@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'channels',
     'djoser',
-    'dashboard'
+    'dashboard',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -195,3 +196,13 @@ MEDIA_URL = '/media/'
 # Path where media is stored
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+SWAGGER_SETTINGS = {
+   'USE_SESSION_AUTH': True,
+   'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
