@@ -110,6 +110,7 @@ class CommentDestroyAPIView(generics.DestroyAPIView):
 
 class LikeAPIView(generics.CreateAPIView, generics.DestroyAPIView):
     queryset = Artwork.objects.all()
+    serializer_class = ArtworkSerializer
 
     def create(self, request, pk):
         try:
@@ -130,6 +131,7 @@ class LikeAPIView(generics.CreateAPIView, generics.DestroyAPIView):
 
 class FollowAPIView(generics.CreateAPIView, generics.DestroyAPIView):
     queryset = User.objects.all()
+    serializer_class = UserSerializer
 
     def create(self, request, pk):
         try:
@@ -172,6 +174,7 @@ class NotificationBadgeAPIView(APIView):
 
 class ReadNotificationAPIView(generics.UpdateAPIView):
     queryset = Notification.objects.all()
+    serializer_class=NotificationSerializer
 
     def patch(self, request, pk):
         queryset = self.queryset.get(id=pk)
