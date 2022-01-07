@@ -12,20 +12,22 @@ from asgiref.sync import async_to_sync
 from rest_framework.views import APIView
 
 
-
 channel_layer = get_channel_layer()
+
+
 class ImageUpload(generics.CreateAPIView):
     serializer_class = ArtworkSerializer
 
     def create(self, request):
         with transaction.atomic():
-            context = {'request': request }
+            context = {'request': request}
             serializer = ArtworkSerializer(data=request.data, context=context)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ProfileAPI(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
@@ -36,18 +38,20 @@ class ProfileAPI(generics.RetrieveUpdateDestroyAPIView):
         serializer = UserSerializer(queryset)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
 class Feed(generics.ListAPIView):
     serializer_class = FeedSerializer
     queryset = Artwork.objects.all()
     pagination_class = StandardResultsSetPagination
 
     def list(self, request):
-        context = {'request': request }
+        context = {'request': request}
         queryset = self.queryset.filter(owned_by=request.user)
         page = self.paginate_queryset(queryset)
         serializers = FeedSerializer(page, many=True, context=context)
         result = self.get_paginated_response(serializers.data)
         return result
+
 
 class RetrieveArtwork(generics.RetrieveAPIView):
     serializer_class = ArtworkSerializer
@@ -69,7 +73,8 @@ class CommentViewSet(viewsets.ModelViewSet):
     pagination_class = StandardResultsSetPagination
 
     def list(self, request, artwork_pk):
-        queryset = self.queryset.filter(artwork_id=artwork_pk).order_by('-created_at')
+        queryset = self.queryset.filter(
+            artwork_id=artwork_pk).order_by('-created_at')
         page = self.paginate_queryset(queryset)
 
         serializer = CommentSerializer(page, many=True)
@@ -79,7 +84,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     def create(self, request, artwork_pk):
         with transaction.atomic():
             artwork = Artwork.objects.get(id=artwork_pk)
-            context = { 'artwork': artwork, 'commentor': request.user }
+            context = {'artwork': artwork, 'commentor': request.user}
             serializer = CommentSerializer(data=request.data, context=context)
             async_to_sync(channel_layer.group_send)(
                 "notification_"+request.user.username,
@@ -91,10 +96,11 @@ class CommentViewSet(viewsets.ModelViewSet):
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class CommentDestroyAPIView(generics.DestroyAPIView):
     queryset = Comment.objects.all()
 
-    def destroy(self, request, artwork_pk, pk):   
+    def destroy(self, request, artwork_pk, pk):
         comment = self.queryset.get(id=pk, artwork_id=artwork_pk)
         if comment.delete():
             return Response(status=status.HTTP_204_NO_CONTENT)
@@ -110,7 +116,7 @@ class LikeAPIView(generics.CreateAPIView, generics.DestroyAPIView):
             artwork = self.queryset.get(id=pk)
             artwork.like(request.user)
             return Response(status=status.HTTP_204_NO_CONTENT)
-        except  Artwork.DoesNotExist:
+        except Artwork.DoesNotExist:
             return Response({'error': 'Artwork does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk):
@@ -118,8 +124,9 @@ class LikeAPIView(generics.CreateAPIView, generics.DestroyAPIView):
             artwork = self.queryset.get(id=pk)
             artwork.unlike(request.user)
             return Response(status=status.HTTP_204_NO_CONTENT)
-        except  Artwork.DoesNotExist:
+        except Artwork.DoesNotExist:
             return Response({'error': 'Artwork does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class FollowAPIView(generics.CreateAPIView, generics.DestroyAPIView):
     queryset = User.objects.all()
@@ -137,8 +144,9 @@ class FollowAPIView(generics.CreateAPIView, generics.DestroyAPIView):
             user = self.queryset.get(id=pk)
             user.unfollow(request.user)
             return Response(status=status.HTTP_204_NO_CONTENT)
-        except  User.DoesNotExist:
+        except User.DoesNotExist:
             return Response({'error': 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class NotificaitonAPIView(generics.ListAPIView):
     queryset = Notification.objects.all()
@@ -146,19 +154,20 @@ class NotificaitonAPIView(generics.ListAPIView):
     pagination_class = StandardResultsSetPagination
 
     def list(self, request):
-        queryset = self.queryset.filter(user=request.user).order_by('-created_at')
+        queryset = self.queryset.filter(
+            user=request.user).order_by('-created_at')
         page = self.paginate_queryset(queryset)
 
         serializer = NotificationSerializer(page, many=True)
         result = self.get_paginated_response(serializer.data)
         return result
 
+
 class NotificationBadgeAPIView(APIView):
 
     def get(self, request):
         serializer = NotificationCountSerializer(request.user)
         return Response({"result": serializer.data}, status=status.HTTP_200_OK)
-        
 
 
 class ReadNotificationAPIView(generics.UpdateAPIView):
@@ -166,11 +175,13 @@ class ReadNotificationAPIView(generics.UpdateAPIView):
 
     def patch(self, request, pk):
         queryset = self.queryset.get(id=pk)
-        serializer = NotificationSerializer(queryset, data={'read': True}, partial=True)
+        serializer = NotificationSerializer(
+            queryset, data={'read': True}, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class SearchTagsAPI(generics.ListAPIView):
     pagination_class = StandardResultsSetPagination
