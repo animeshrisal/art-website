@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { dashboardService } from "../DashboardService";
 import { Form, Input, Button, Upload, notification, Select, Spin } from "antd";
@@ -11,12 +11,11 @@ const ImageUpload = () => {
   const [searchedTags, setSearchedTag] = useState('')
   const [fileList, setFileList] = useState([]);
 
-  const { isLoading, data, refetch } = useQuery(["tags"], () => dashboardService.getTagsForDropdown(searchedTags)
+  const { isLoading, data, refetch } = useQuery(["tags", searchedTags], () => dashboardService.getTagsForDropdown(searchedTags)
   )
 
   const searchTag = (value) => {
     setSearchedTag(value)
-    refetch()
   }
 
   const mutation = useMutation(

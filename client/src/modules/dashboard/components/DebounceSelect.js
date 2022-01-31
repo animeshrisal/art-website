@@ -8,7 +8,6 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 500, isLoading, search
 
     const debounceFetcher = useMemo(() => {
         const loadOptions = (value) => {
-            console.log(value)
             search(value)
             if (isLoading) {
                 setOptions([]);
