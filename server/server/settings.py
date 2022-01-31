@@ -22,15 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-x%zp&rq28$b@b9c+mw61%*38$efhim_84#33w7n!=a(f4&%s&n'
+SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-#$^+hx-mc6rof7bwm_h0!-*50p91dvz*@b7wukvs5k93%0ao8q")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get("DEBUG", default=0))
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost").split(" ")
 
-ALLOWED_HOSTS = []
 
 # Application definition
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -45,7 +44,7 @@ INSTALLED_APPS = [
     'channels',
     'djoser',
     'dashboard',
-    'drf_yasg',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -107,13 +106,13 @@ SIMPLE_JWT = {
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'arts',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+    "default": {
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.postgresql"),
+        "NAME": os.environ.get("SQL_DATABASE", "artwebsite"),
+        "USER": os.environ.get("SQL_USER", "postgres"),
+        "PASSWORD": os.environ.get("SQL_PASSWORD", "postgres"),
+        "HOST": os.environ.get("SQL_HOST", "localhost"),
+        "PORT": os.environ.get("SQL_PORT", "5432"),
     }
 }
 
@@ -155,6 +154,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -183,12 +188,7 @@ DJOSER = {
 config = configparser.ConfigParser()
 config.read(os.path.join(BASE_DIR, 'config.cfg'))
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = config.get('email', 'user') 
-EMAIL_HOST_PASSWORD = config.get('email', 'password') 
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Base url to serve media files
 MEDIA_URL = '/media/'
@@ -196,13 +196,11 @@ MEDIA_URL = '/media/'
 # Path where media is stored
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-SWAGGER_SETTINGS = {
-   'USE_SESSION_AUTH': True,
-   'SECURITY_DEFINITIONS': {
-        'Bearer': {
-            'type': 'apiKey',
-            'name': 'Authorization',
-            'in': 'header'
-        }
-    }
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Artsite',
+    'DESCRIPTION': 'Your project description',
+    'VERSION': '1.0.0',
+    'COMPONENT_SPLIT_REQUEST': True
+
+    # OTHER SETTINGS
 }

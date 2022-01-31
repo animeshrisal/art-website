@@ -3,14 +3,13 @@ version: '3.8'
 services:
   web:
     build:
-      context: .
+      context: ./server
       dockerfile: Dockerfile
-    command:  daphne -b 0.0.0.0 -p 8000 adskate_server.asgi:application
+    command:  daphne -b 0.0.0.0 -p 8000 server.asgi:application
     expose:
       - 8000
     env_file:
-      - ./.env.test
-      - ./.env.aws.test
+      - ./.env
     volumes:
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
@@ -22,7 +21,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ./.env.test.db
+      - ./.env.db
   nginx:
     build: ./nginx
     volumes:
@@ -37,13 +36,13 @@ services:
   celery:
     restart: always
     build:
-      context: .
-    command: celery -A adskate_server worker -l info
+      context: ./server
+    command: celery -A server worker -l info
     volumes:
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
     env_file:
-      - ./.env.test
+      - ./.env
     depends_on:
       - db
       - redis

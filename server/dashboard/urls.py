@@ -14,28 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from rest_framework import permissions
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
 from django.urls import path
 from . import views
-
-schema_view = get_schema_view(
-   openapi.Info(
-      title="Snippets API",
-      default_version='v1',
-      description="Test description",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@snippets.local"),
-      license=openapi.License(name="BSD License"),
-   ),
-)
-
+from django.conf import settings
+from rest_framework import permissions
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 urlpatterns = [
-  url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-   url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-   url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('upload/', views.ImageUpload.as_view(), name="image_upload"),
     path('feed/', views.Feed.as_view(), name='artwork-dashboard'),
     path('artwork/<int:pk>/', views.RetrieveArtwork.as_view(), name='artwork-dashboard'),
@@ -50,3 +35,14 @@ urlpatterns = [
     path('tags/', views.SearchTagsAPI.as_view(), name='tags'),
     
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        # YOUR PATTERNS
+        path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+        # Optional UI:
+        path('api/schema/swagger-ui/',
+             SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+        path('api/schema/redoc/',
+             SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    ]

@@ -196,5 +196,3 @@ class GalleryAPIVIew(viewsets.ModelViewSet):
     queryset = Gallery.objects.all()
     pagination_class = StandardResultsSetPagination
     serializers = GallerySerializer
-     
-class ArtworkGallery()
