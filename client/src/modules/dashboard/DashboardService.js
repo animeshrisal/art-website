@@ -6,6 +6,7 @@ import {
 } from "../../helpers";
 
 const imageUpload = (artwork) => {
+  artwork.tags = artwork.tags.map(tag => tag.key)
   console.log(artwork);
   return fetch(
     `${URL}/dashboard/upload/`,
