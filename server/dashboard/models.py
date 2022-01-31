@@ -26,6 +26,7 @@ class User(AbstractUser):
 class Gallery(TimeStampedModel):
     name = models.CharField(max_length=200)
     description = models.TextField()
+    
 
     def __str__(self):
         return self.name

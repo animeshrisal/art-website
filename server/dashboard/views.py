@@ -3,10 +3,10 @@ from django.db import transaction
 from django.db.models import query
 from shared.helpers import StandardResultsSetPagination
 from rest_framework.response import Response
-from dashboard.serializers import ArtworkSerializer, CommentSerializer, FeedSerializer, NotificationCountSerializer, NotificationSerializer, TagSerializer, UserSerializer
+from dashboard.serializers import ArtworkSerializer, CommentSerializer, FeedSerializer, GallerySerializer, NotificationCountSerializer, NotificationSerializer, TagSerializer, UserSerializer
 from rest_framework import mixins, serializers, status, generics
 from rest_framework import viewsets, generics, filters
-from .models import Artwork, Comment, Notification, Tags, User
+from .models import Artwork, Comment, Gallery, Notification, Tags, User
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from rest_framework.views import APIView
@@ -185,10 +185,16 @@ class ReadNotificationAPIView(generics.UpdateAPIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class SearchTagsAPI(generics.ListAPIView):
     pagination_class = StandardResultsSetPagination
     queryset = Tags.objects.all()
     serializer_class = TagSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
+
+class GalleryAPIVIew(viewsets.ModelViewSet):
+    queryset = Gallery.objects.all()
+    pagination_class = StandardResultsSetPagination
+    serializers = GallerySerializer
+     
+class ArtworkGallery()

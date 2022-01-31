@@ -11,8 +11,8 @@ POST {{baseURL}}/auth/users/
 content-type: application/json
 
 {
-    "username": "test",
-    "email": "animeshrisal99@gmail.com",
+    "username": "test2",
+    "email": "animesh@bajratechnologies.com",
     "password": "master@123",
     "re_password": "master@123"
 }
@@ -47,8 +47,8 @@ POST {{baseURL}}/auth/users/activation/
 content-type: application/json
 
 {
-    "uid": "MQ",
-    "token": "aquo6v-cf98fd961cc0123fb41b3a4871b278a2"
+    "uid": "NA",
+    "token": "ayrufl-5edc918a5b9d3c5e1014559457dd28aa"
 }
 ###
 
@@ -79,7 +79,7 @@ Authorization: JWT {{access_token}}
 
 # @name feed
 
-GET {{baseURL}}/dashboard/feed/
+GET {{baseURL}}/dashboard/feed/?search=test
 content-type: application/json
 Authorization: JWT {{access_token}}
 ###
