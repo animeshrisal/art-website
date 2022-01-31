@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'channels',
     'djoser',
-    'dashboard',
     'drf_spectacular',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
@@ -204,3 +204,7 @@ SPECTACULAR_SETTINGS = {
 
     # OTHER SETTINGS
 }
+
+CELERY_URL = os.environ.get("REDIS_URL", "localhost")
+CELERY_BROKER_URL = "redis://{}:6379".format(CELERY_URL)
+CELERY_RESULT_BACKEND = "redis://{}:6379".format(CELERY_URL)
